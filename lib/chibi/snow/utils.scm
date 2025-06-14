@@ -39,6 +39,9 @@
               '(kawa -e "(write (features))"))))
     (larceny "larceny" (larceny --version) "v0.98"
              ,(delay '()))
+    (project "project" #f #f ,(delay
+                                (process->sexp
+                                  '(chibi-scheme -p "(display \"project\")"))))
     (sagittarius "sagittarius" #f #f
                  ,(delay
                     (process->sexp

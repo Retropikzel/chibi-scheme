@@ -25,8 +25,9 @@
                     (warn msg)
                     #f))))))
       (and confirm?
-           (yes-or-no? cfg "Implementation " (car spec) " does not "
-                       " seem to be available, install anyway?"))))
+           (or (equal? (car spec) 'project)
+               (yes-or-no? cfg "Implementation " (car spec) " does not "
+                           " seem to be available, install anyway?")))))
 
 (define (conf-selected-implementations cfg)
   (let ((requested (conf-get-list cfg 'implementations '(chibi))))
@@ -1398,6 +1399,10 @@
                    "(begin (display (getenv \"LARCENY_ROOT\")) (exit))"))
         char-whitespace?)
        "lib/Snow")))
+    ((project)
+     (list (make-path (string-trim (string-append (current-directory)
+                                                  "./snow")
+                                   char-whitespace?))))
     (else
      (list (make-path (or (conf-get cfg 'install-prefix) "/usr/local")
                       "share/snow"
@@ -1680,6 +1685,7 @@
    ((eq? impl 'chicken) (get-install-library-dir impl cfg))
    ((eq? impl 'cyclone) (get-install-library-dir impl cfg))
    ((eq? impl 'guile) (get-guile-site-dir))
+   ((eq? impl 'project) (string-append (current-directory) "/snow"))
    ((conf-get cfg 'install-source-dir))
    ((conf-get cfg 'install-prefix)
     => (lambda (prefix) (make-path prefix "share/snow" impl)))
@@ -1689,6 +1695,7 @@
   (cond
    ((eq? impl 'chicken) (get-install-library-dir impl cfg))
    ((eq? impl 'cyclone) (get-install-library-dir impl cfg))
+   ((eq? impl 'project) (string-append (current-directory) "/snow/lib"))
    ((conf-get cfg 'install-data-dir))
    ((conf-get cfg 'install-prefix)
     => (lambda (prefix) (make-path prefix "share/snow" impl)))
@@ -1708,12 +1715,14 @@
     (car (get-install-dirs impl cfg)))
    ((eq? impl 'guile)
     (get-guile-site-ccache-dir))
+   ((eq? impl 'project) (string-append (current-directory) "/snow/lib"))
    ((conf-get cfg 'install-prefix)
     => (lambda (prefix) (make-path prefix "lib" impl)))
    (else snow-binary-module-directory)))
 
 (define (get-install-binary-dir impl cfg)
   (cond
+   ((eq? impl 'project) (string-append (current-directory) "/snow/bin"))
    ((conf-get cfg 'install-binary-dir))
    ((conf-get cfg 'install-prefix)
     => (lambda (prefix) (make-path prefix "bin")))
