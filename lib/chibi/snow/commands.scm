@@ -2421,10 +2421,23 @@
             (warn "no candidate selected")
             (lp (cdr ls) res ignored)))))))))
 
+(define (read-packages.scm path)
+  (map (lambda (dependency)
+         (parameterize
+           ((current-output-port
+              (open-output-string)))
+           (display dependency)
+           (get-output-string (current-output-port))))
+       (with-input-from-file path (lambda () (read)))))
+
 ;; First lookup dependencies for all implementations so we can
 ;; download in a single batch.  Then perform the installations a
 ;; single implementation at a time.
 (define (command/install cfg spec . args)
+  ;; If the first argument is a file then read the list of dependencies from it
+  (when (and (not (null? args))
+             (file-exists? (car args)))
+    (set! args (read-packages.scm (car args))))
   (let*-values
       (((repo) (current-repositories cfg))
        ((impls) (conf-selected-implementations cfg))

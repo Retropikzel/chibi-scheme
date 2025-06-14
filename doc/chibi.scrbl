@@ -1512,7 +1512,10 @@ you will be asked to confirm which implementation to install.}
 
 \p{You can also bypass the repository and install a manually downloaded
 snowball by giving a path to that file instead of a name. No package
-dependencies will be checked for install in this case}}
+dependencies will be checked for install in this case}
+
+\p{You can also give path of a .scm file containing list of dependencies as
+the first argument and those are then installed.}}
 
 \item{upgrade names ... - upgrade installed packages
 \p{Upgrade the packages if new versions are available.
