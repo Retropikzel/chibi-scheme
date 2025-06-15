@@ -32,7 +32,7 @@
 (define (conf-selected-implementations cfg)
   (let ((requested (conf-get-list cfg 'implementations '(chibi))))
     (let lp ((ls (if (memq 'all requested)
-                     (append (map car known-implementations)
+                     (append (delete 'project (map car known-implementations))
                              (delete 'all requested))
                      requested))
              (res '()))

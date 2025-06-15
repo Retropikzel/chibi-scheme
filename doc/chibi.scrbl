@@ -1499,7 +1499,8 @@ removing packages.
 By default the packages will be managed for Chibi. You can specify
 what Scheme implementation to install, upgrade... with
 \scheme{--implementations} or \scheme{--impls} option. Specify "all"
-to manage all supported implementations.
+to manage all supported implementations. Implementation "project" is not
+include in "all".
 
 \itemlist[
 
