@@ -1399,6 +1399,16 @@
                    "(begin (display (getenv \"LARCENY_ROOT\")) (exit))"))
         char-whitespace?)
        "lib/Snow")))
+    ((mit-scheme)
+     (list
+       (make-path
+        (process->string
+         '(mit-scheme
+          --silent
+          --eval
+          "(display (->namestring (system-library-directory-pathname \"libraries\")))"
+          --eval
+          "(exit)")))))
     (else
      (list (make-path (or (conf-get cfg 'install-prefix) "/usr/local")
                       "share/snow"
@@ -1469,10 +1479,6 @@
          (if lib-path
              `(gosh -A ,install-dir -A ,lib-path ,file)
              `(gosh -A ,install-dir ,file)))
-        ((guile)
-         (if lib-path
-             `(guile -L ,install-dir -L ,lib-path ,file)
-             `(guile -L ,install-dir ,file)))
         ((kawa)
          (let ((install-dir (path-resolve install-dir (current-directory))))
            (if lib-path
@@ -1625,6 +1631,8 @@
            35 37 38 39 41 42 43 45 46 55 60 61 62 64 67 69 71 87 88
            98 105 111 171)
     (kawa 1 2 13 14 34 37 60 69 95)
+    (mit-scheme 0 1 2 6 8 9 14 23 27 30 39 62 69 112 115 124 125 128 129 131
+                133 143 158 162 219)
     (larceny 0 1 2 4 5 6 7 8 9 11 13 14 16 17 19 22 23 25 26 27 28 29
              30 31 37 38 39 41 42 43 45 48 51 54 56 59 60 61 62 63 64
              66 67 69 71 74 78 86 87 95 96 98)))
@@ -1681,6 +1689,7 @@
    ((eq? impl 'chicken) (get-install-library-dir impl cfg))
    ((eq? impl 'cyclone) (get-install-library-dir impl cfg))
    ((eq? impl 'guile) (get-guile-site-dir))
+   ((eq? impl 'mit-scheme) (get-install-library-dir impl cfg))
    ((conf-get cfg 'install-source-dir))
    ((conf-get cfg 'install-prefix)
     => (lambda (prefix) (make-path prefix "share/snow" impl)))
@@ -1690,6 +1699,7 @@
   (cond
    ((eq? impl 'chicken) (get-install-library-dir impl cfg))
    ((eq? impl 'cyclone) (get-install-library-dir impl cfg))
+   ((eq? impl 'mit-scheme) (get-install-library-dir impl cfg))
    ((conf-get cfg 'install-data-dir))
    ((conf-get cfg 'install-prefix)
     => (lambda (prefix) (make-path prefix "share/snow" impl)))
@@ -1709,6 +1719,8 @@
     (car (get-install-dirs impl cfg)))
    ((eq? impl 'guile)
     (get-guile-site-ccache-dir))
+   ((eq? impl 'mit-scheme)
+    (car (get-install-dirs impl cfg)))
    ((conf-get cfg 'install-prefix)
     => (lambda (prefix) (make-path prefix "lib" impl)))
    (else snow-binary-module-directory)))

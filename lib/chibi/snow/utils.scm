@@ -37,6 +37,10 @@
           ,(delay
              (process->sexp
               '(kawa -e "(write (features))"))))
+    (mit-scheme "mit-scheme" (mit-scheme --version) #f
+          ,(delay
+             (process->sexp
+              '(mit-scheme --eval "(features)" --eval "(exit)"))))
     (larceny "larceny" (larceny --version) "v0.98"
              ,(delay '()))
     (sagittarius "sagittarius" #f #f
