@@ -42,7 +42,13 @@
     (sagittarius "sagittarius" #f #f
                  ,(delay
                     (process->sexp
-                     '(sagittarius -I "(scheme base)" -e "(write (features))"))))))
+                     '(sagittarius -I "(scheme base)" -e "(write (features))"))))
+    (tr7 "tr7i"
+         (tr7i -c "(import (scheme base) (tr7 misc)) (display (tr7-version))")
+         #f
+         ,(delay
+            (process->sexp
+              '(tr7i -c "(import (scheme base)) (display (features))"))))))
 
 (define (impl->version impl cmd)
   (let* ((lines (process->string-list cmd))
