@@ -1905,15 +1905,15 @@
   (let* ((source-scm-file (get-library-file cfg library))
          (source-go-file (string-append
                           (library->path cfg library) ".go"))
-         (dest-scm-file
-          (string-append (library->path cfg library) ".scm"))
+         (dest-sld-file
+          (string-append (library->path cfg library) ".sld"))
          (dest-go-file
           (string-append (library->path cfg library) ".go"))
          (include-files
           (library-include-files impl cfg (make-path dir source-scm-file)))
          (install-dir (get-install-source-dir impl cfg))
          (install-lib-dir (get-install-library-dir impl cfg)))
-    (let ((scm-path (make-path install-dir dest-scm-file))
+    (let ((scm-path (make-path install-dir dest-sld-file))
           (go-path (make-path install-lib-dir dest-go-file)))
       (install-directory cfg (path-directory scm-path))
       (install-directory cfg (path-directory go-path))
@@ -2132,8 +2132,12 @@
     (with-directory
      dir
      (lambda ()
-       (and (system 'guild 'compile '-O0 '--r7rs '-o dest-library-file src-library-file)
-            library)))))
+       (let ((res (system 'guild 'compile '-O0 '--r7rs '-o dest-library-file src-library-file)))
+         (and (or (and (pair? res) (zero? (cadr res)))
+                  (yes-or-no? cfg "guile guild failed to build: "
+                              (library-name library)
+                              " - install anyway?"))
+              library))))))
 
 (define (lookup-builder builder)
   (case builder

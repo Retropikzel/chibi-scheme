@@ -31,7 +31,7 @@
             ,(delay
                (process->sexp
                 '(gosh -uscheme.base -e "(write (features))"))))
-    (guile "guile" (guile -e "(display (version))") "3.0.8"
+    (guile "guile" (guile -e "(display (version))") #f ;"3.0.8"
            ,(delay
               (process->sexp
                '(guile --r7rs -c "(import (scheme base)) (display (features))"))))
