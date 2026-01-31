@@ -1480,16 +1480,7 @@
           '(csi -R chicken.platform -p "(car (repository-path))")))
      char-whitespace?)))
 
-(define (get-guile-site-dir)
-  (process->string '(guile -c "(display (%site-dir))")))
-
-(define (get-guile-site-ccache-dir)
-  (process->string '(guile -c "(display (%site-ccache-dir))")))
-
 (define (get-install-dirs impl cfg)
-  (define (guile-eval expr)
-    (guard (exn (else #f))
-      (process->sexp `(guile -c ,(write-to-string `(write ,expr))))))
   (case impl
     ((capyscheme)
      (list
@@ -1541,14 +1532,20 @@
             "/usr/local/share/gauche/"))))
     ((guile)
      (let ((path
-            (guile-eval
-             '(string-append (cdr (assq 'pkgdatadir %guile-build-info))
-                             (string (integer->char 47))
-                             (effective-version)))))
+             (guard (exn (else #f))
+               (process->sexp
+                 `(guile -c ,(write-to-string
+                               `(write
+                                  (string-append
+                                    (cdr (assq 'pkgdatadir %guile-build-info))
+                                    (string (integer->char 47))
+                                    (effective-version)))))))))
        (list
-        (if (string? path)
-            path
-            "/usr/local/share/guile/"))))
+         (make-path
+           (or (conf-get cfg 'install-prefix) "")
+           (if (string? path)
+             path
+             "/usr/local/share/guile/")))))
     ((kawa)
      (list "/usr/local/share/kawa/lib"))
     ((loko)
@@ -1983,7 +1980,7 @@
    ((eq? impl 'gambit) (get-install-library-dir impl cfg))
    ((eq? impl 'gauche) (get-install-library-dir impl cfg))
    ((eq? impl 'generic) (get-install-library-dir impl cfg))
-   ((eq? impl 'guile) (get-guile-site-dir))
+   ((eq? impl 'guile) (get-install-library-dir impl cfg))
    ((eq? impl 'kawa) (get-install-library-dir impl cfg))
    ((eq? impl 'loko) (get-install-library-dir impl cfg))
    ((eq? impl 'mit-scheme) (get-install-library-dir impl cfg))
@@ -2006,6 +2003,7 @@
    ((eq? impl 'gambit) (get-install-library-dir impl cfg))
    ((eq? impl 'gauche) (get-install-library-dir impl cfg))
    ((eq? impl 'generic) (get-install-library-dir impl cfg))
+   ((eq? impl 'guile) (get-install-library-dir impl cfg))
    ((eq? impl 'kawa) (get-install-library-dir impl cfg))
    ((eq? impl 'loko) (get-install-library-dir impl cfg))
    ((eq? impl 'mit-scheme) (get-install-library-dir impl cfg))
@@ -2041,7 +2039,7 @@
    ((eq? impl 'gambit)
     (car (get-install-dirs impl cfg)))
    ((eq? impl 'guile)
-    (get-guile-site-ccache-dir))
+    (car (get-install-dirs impl cfg)))
    ((eq? impl 'kawa)
     (car (get-install-dirs impl cfg)))
    ((eq? impl 'loko)
