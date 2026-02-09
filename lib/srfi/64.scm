@@ -30,7 +30,7 @@
     ((%test-export . names) (if #f #f))))
 
 (cond-expand
- (srfi-9
+ ((or srfi-9 r7rs)
   (define-syntax %test-record-define
     (syntax-rules ()
       ((%test-record-define tname alloc runner? (name index getter setter) ...)
@@ -522,7 +522,7 @@
     ((test-runner-on-test-end r) r)))
 
 (cond-expand
- (srfi-34
+ ((or srfi-34 r7rs)
   (define-syntax %test-evaluate-with-catch
     (syntax-rules ()
       ((%test-evaluate-with-catch test-expression)
@@ -646,7 +646,7 @@
 		   #t)
 		  (else #t))
 	      expr #f))))))
- (srfi-34
+ ((or srfi-34 r7rs)
   (define-syntax %test-error
     (syntax-rules ()
       ((%test-error r etype expr)
