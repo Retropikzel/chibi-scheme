@@ -7,7 +7,7 @@
 ;;> requiring a grammar to specify all of the different options.
 
 (define-record-type Csv-Grammar
-  (make-csv-grammar separator-chars quote-char quote-doubling-escapes? escape-char record-separator comment-chars quote-non-numeric?)
+  (make-csv-grammar separator-chars quote-char quote-doubling-escapes? escape-char record-separator comment-chars quote-non-numeric? parse-numeric?)
   csv-grammar?
   (separator-chars csv-grammar-separator-chars csv-grammar-separator-chars-set!)
   (quote-char csv-grammar-quote-char csv-grammar-quote-char-set!)
@@ -15,7 +15,8 @@
   (escape-char csv-grammar-escape-char csv-grammar-escape-char-set!)
   (record-separator csv-grammar-record-separator csv-grammar-record-separator-set!)
   (comment-chars csv-grammar-comment-chars csv-grammar-comment-chars-set!)
-  (quote-non-numeric? csv-grammar-quote-non-numeric? csv-grammar-quote-non-numeric?-set!))
+  (quote-non-numeric? csv-grammar-quote-non-numeric? csv-grammar-quote-non-numeric?-set!)
+  (parse-numeric? csv-grammar-parse-numeric? csv-grammar-parse-numeric?-set!))
 
 ;; TODO: Other options to consider:
 ;; - strip-leading/trailing-whitespace?
@@ -41,7 +42,7 @@
 ;;>     (quote-char . #f)))
 ;;> }
 (define (csv-grammar spec)
-  (let ((grammar (make-csv-grammar '(#\,) #\" #t #f 'lax '() #f)))
+  (let ((grammar (make-csv-grammar '(#\,) #\" #t #f 'lax '() #f #f)))
     (for-each
      (lambda (x)
        (case (car x)
@@ -68,6 +69,8 @@
           (csv-grammar-comment-chars-set! grammar (cdr x)))
          ((quote-non-numeric?)
           (csv-grammar-quote-non-numeric?-set! grammar (cdr x)))
+         ((parse-numeric?)
+          (csv-grammar-parse-numeric?-set! grammar (cdr x)))
          (else
           (error "unknown csv-grammar spec" x))))
      spec)
@@ -130,6 +133,8 @@
              ((and (csv-grammar-quote-non-numeric? grammar) (not quoted?))
               (or (string->number field)
                   (error "unquoted field is not numeric" field)))
+             ((and (csv-grammar-parse-numeric? grammar) (not quoted?))
+              (or (string->number field) field))
              (else field))))
         (define (finish-row)
           (let ((field (get-field)))
