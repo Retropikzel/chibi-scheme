@@ -1894,26 +1894,31 @@
 (define (native-srfi-support impl cfg)
   (letrec*
     ((max-srfis 500)
+     (srfi-conds '())
      (gen-srfis-conds
        (lambda (count)
-         (when (< count max-srfis)
-           (display "  ")
-           (display
-             (string-append
-               "(cond-expand ((or "
-               (if (or ;; Capyscheme errors if (library ...) form is there
-                       (equal? impl 'capyscheme)
-                       ;; Guile errors if library name has a number
-                       (equal? impl 'guile)
-                       ;; STklos errors if (library ...) form is there
-                       (equal? impl 'stklos))
-                 ""
-                 (string-append "(library (srfi " (number->string count) ")) "))
-               "srfi-" (number->string count) ") "
-               (number->string count)
-               ") (else #f))"))
-           (newline)
-           (gen-srfis-conds (+ count 1))))))
+         (if (>= count max-srfis)
+           srfi-conds
+           (begin
+             (set! srfi-conds
+               (append srfi-conds
+                       (list (string-append
+                               "  "
+                               "(cond-expand ((or "
+                               (if (or ;; Capyscheme errors if (library ...) form is there
+                                     (equal? impl 'capyscheme)
+                                     ;; Guile errors if library name has a number
+                                     (equal? impl 'guile)
+                                     ;; STklos errors if (library ...) form is there
+                                     (equal? impl 'stklos))
+                               ""
+                               (string-append "(library (srfi " (number->string count) ")) "))
+                             "srfi-" (number->string count) ") "
+                             (number->string count)
+                             ") (else #f))"
+                             (string #\newline)))))
+           (gen-srfis-conds (+ count 1)))))))
+    (gen-srfis-conds 0)
     (call-with-temp-file
       "srfi-list.scm"
       (lambda (tmp-path out preserve)
@@ -1925,7 +1930,10 @@
             (newline)
             (display "(define srfis (list")
             (newline)
-            (gen-srfis-conds 0)
+            (for-each (lambda (srfi-cond)
+                        (display srfi-cond)
+                        (newline))
+                      srfi-conds)
             (display "))")
             (newline)
             (display "(write srfis)")
@@ -1935,7 +1943,12 @@
             (display "(exit 0)")))
         (let* ((cmd (scheme-program-command impl cfg tmp-path))
                (srfis (filter (lambda (item) item) (process->sexp cmd))))
-          (if (eof-object? srfis)
+          (if (and (not (list? srfis))
+                   (not (yes-or-no?
+                          cfg
+                          "Could not get supported SRFI list for implementation.
+                          Installing SRFI libraries directly or as dependency might
+                          overwrite natively installed SRFI's. Continue?")))
             `(,impl)
             `(,impl ,@srfis)))))))
 
