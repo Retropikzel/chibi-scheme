@@ -3014,10 +3014,11 @@
             (if (member (car ls) lib-names)
                 (warn "skipping already installed library: " (car ls)))
             (lp (cdr ls) res (cons (car ls) ignored)))
-           ((and (null? candidates)
-                 (not (assoc (car ls) current))
+           ((and (not (assoc (car ls) current))
                  (pair? (car ls))
                  (implementation-supports-natively? impl cfg (car ls)))
+            (when (and (car ls) (equal? (car (car ls)) 'srfi))
+              (warn "skipping natively supported SRFI" (car ls)))
             ;; assume certain core libraries already installed
             ;; (info "assuming core library installed: " (car ls))
             (lp (cdr ls) res (cons (car ls) ignored)))
