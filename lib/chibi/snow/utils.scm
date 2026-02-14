@@ -86,7 +86,7 @@
     (skint "skint" (skint --version) #f
                  ,(delay
                     (process->sexp
-                     '(skint -qe "(write (features))"))))
+                     '(skint -qe "(features)"))))
     (stklos "stklos" (stklos --version) #f
                  ,(delay
                     (process->sexp
