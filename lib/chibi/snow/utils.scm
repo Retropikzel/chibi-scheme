@@ -83,6 +83,10 @@
                  ,(delay
                     (process->sexp
                      '(sagittarius -I "(scheme base)" -e "(write (features)) (exit)"))))
+    (skint "skint" (skint --version) #f
+                 ,(delay
+                    (process->sexp
+                     '(skint -qe "(write (features))"))))
     (stklos "stklos" (stklos --version) #f
                  ,(delay
                     (process->sexp
@@ -129,6 +133,7 @@
     ((mit) (cond-expand (mit #t) (else #f)))
     ((racket) (cond-expand (racket #t) (else #f)))
     ((sagittarius) (cond-expand (sagittarius #t) (else #f)))
+    ((skint) (cond-expand (skint #t) (else #f)))
     ((stklos) (cond-expand (stklos #t) (else #f)))
     ((tr7) (cond-expand (tr7 #t) (else #f)))
     (else #f)))
