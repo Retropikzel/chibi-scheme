@@ -1758,8 +1758,8 @@
              `(racket -I r7rs -S ,install-dir --script ,file)))
         ((skint)
          (if lib-path
-             `(stklos -A ,install-dir -A ,lib-path ,file)
-             `(stklos -A ,install-dir ,file)))
+             `(skint -A ,install-dir -A ,lib-path ,file)
+             `(skint -A ,install-dir ,file)))
         ((stklos)
          (if lib-path
              `(stklos -A ,install-dir -A ,lib-path ,file)
