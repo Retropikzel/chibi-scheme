@@ -1606,6 +1606,14 @@
      (list (make-path
             (process->string
              '(sagittarius -I "(sagittarius)" -e "(display (car (load-path))) (exit)")))))
+    ((skint)
+     (list
+       (string-trim
+         (string-trim
+           (process->string
+             '(skint -qe "(begin (import (only (skint hidden) base-library-directory)) (base-library-directory))"))
+           #\newline)
+         #\")))
     ((stklos)
      (list (make-path
             (process->string
@@ -1748,6 +1756,10 @@
          (if lib-path
              `(racket -I r7rs -S ,install-dir -S ,lib-path --script ,file)
              `(racket -I r7rs -S ,install-dir --script ,file)))
+        ((skint)
+         (if lib-path
+             `(skint -A ,install-dir -A ,lib-path ,file)
+             `(skint -A ,install-dir ,file)))
         ((stklos)
          (if lib-path
              `(stklos -A ,install-dir -A ,lib-path ,file)
@@ -2013,6 +2025,7 @@
    ((eq? impl 'mosh) (get-install-library-dir impl cfg))
    ((eq? impl 'racket) (get-install-library-dir impl cfg))
    ((eq? impl 'sagittarius) (get-install-library-dir impl cfg))
+   ((eq? impl 'skint) (get-install-library-dir impl cfg))
    ((eq? impl 'stklos) (get-install-library-dir impl cfg))
    ((eq? impl 'tr7) (get-install-library-dir impl cfg))
    ((eq? impl 'ypsilon) (get-install-library-dir impl cfg))
@@ -2036,6 +2049,7 @@
    ((eq? impl 'mosh) (get-install-library-dir impl cfg))
    ((eq? impl 'racket) (get-install-library-dir impl cfg))
    ((eq? impl 'sagittarius) (get-install-library-dir impl cfg))
+   ((eq? impl 'skint) (get-install-library-dir impl cfg))
    ((eq? impl 'stklos) (get-install-library-dir impl cfg))
    ((eq? impl 'tr7) (get-install-library-dir impl cfg))
    ((eq? impl 'ypsilon) (get-install-library-dir impl cfg))
@@ -2077,6 +2091,8 @@
    ((eq? impl 'racket)
     (car (get-install-dirs impl cfg)))
    ((eq? impl 'sagittarius)
+    (car (get-install-dirs impl cfg)))
+   ((eq? impl 'skint)
     (car (get-install-dirs impl cfg)))
    ((eq? impl 'stklos)
     (car (get-install-dirs impl cfg)))

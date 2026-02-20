@@ -1673,6 +1673,7 @@ installed. The following are currently supported:
 \item{mosh - version >= 0.29-rc1}
 \item{racket - version >= 8.16 with the \scheme{r7rs} pkg}
 \item{sagittarius - version >= 0.9.13}
+\item{skint - version > 0.6.7}
 \item{stklos - version > 2.10}
 \item{tr7 - version > 2.0.12}
 \item{ypsilon - version > 2.0.8}
