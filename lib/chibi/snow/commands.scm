@@ -2924,8 +2924,14 @@
              (preserve))))))))
 
 (define (install-package-from-file repo impl cfg file)
-  (let ((pkg (package-file-meta file))
-        (snowball (maybe-gunzip (file->bytevector file))))
+  (let* ((pkg (package-file-meta file))
+         (snowball (maybe-gunzip (file->bytevector file)))
+         (dependencies (package-dependencies impl cfg pkg)))
+    (for-each
+      (lambda (pkg)
+        (when (not (implementation-supports-natively? impl cfg pkg))
+          (command/install cfg '() (x->string pkg))))
+      dependencies)
     (install-package-from-snowball repo impl cfg pkg snowball)))
 
 (define (git-fetch-package repo cfg pkg)
