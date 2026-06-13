@@ -28,11 +28,7 @@ jobs:
       - name: Build
         run: make PLATFORM=windows
       - name: Test
-        run: make test-all
-      - name: Setup
-        run: sudo make install
-      - name: Run in PATH
-        run: chibi-scheme r7rs-tests.scm
+        run: make test-dist
         working-directory: tests
   windows-installer:
     name: windows-installer
