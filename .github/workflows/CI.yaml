@@ -31,7 +31,6 @@ jobs:
           install: >-
             make
             gcc
-            plocate
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
       - name: Install NSIS
