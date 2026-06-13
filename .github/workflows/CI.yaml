@@ -34,11 +34,12 @@ jobs:
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
   webassembly-build:
-    name: webasembly-build
+    name: webassembly-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Install emscripten
-        run: sudo apt install -y emscripten
+        uses: lovasoa/setup-emscripten@master
+        with:
+            emscripten-version: '6.0.0'
       - name: Build
         run: make js
