@@ -31,8 +31,9 @@ jobs:
           install: >-
             make
             gcc
+            findutils
       - name: search dll files
-        run: dir *.dll /s
+        run: msys2 -c "find . -name \"*.dll\""
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
       - name: Install NSIS
