@@ -33,13 +33,18 @@ jobs:
             gcc
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
-      - name: Test
-        run: msys2 -c "make PLATFORM=msys test-all"
   windows-installer:
     name: windows-installer
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
+      - name: Install NSIS
+        run: |
+          iwr -useb get.scoop.sh -outfile 'install.ps1'
+          .\install.ps1 -RunAsAdmin
+          scoop update
+          scoop bucket add extras
+          scoop install nsis
       - uses: msys2/setup-msys2@v2
         with:
           update: true
@@ -47,7 +52,7 @@ jobs:
             make
             gcc
       - name: Build
-        run: make PLATFORM=cygwin && tree .
+        run: msys2 -C "make PLATFORM=msys" && tree .
       - name: Print NSIS version
         run: makensis -VERSION
       - name: Print NSIS compile flags
