@@ -29,7 +29,7 @@ jobs:
         with:
           packages: gcc
       - name: Build
-        run: make PLATFORM=windows
+        run: make PLATFORM=cygwin
   windows-installer:
     name: windows-installer
     runs-on: windows-latest
@@ -46,7 +46,7 @@ jobs:
           scoop bucket add extras
           scoop install nsis
       - name: Build
-        run: make && tree .
+        run: make PLATFORM=cygwin && tree .
       - name: Print NSIS version
         run: makensis -VERSION
       - name: Print NSIS compile flags
