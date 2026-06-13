@@ -30,7 +30,6 @@ jobs:
           packages: gcc
       - name: Build
         run: make
-        working-directory: tests
   windows-installer:
     name: windows-installer
     runs-on: windows-latest
