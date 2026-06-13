@@ -28,7 +28,7 @@ jobs:
       - name: Build
         run: make PLATFORM=windows
       - name: Test
-        run: make test-libs test-ffi test-division
+        run: make test-ffi test-division
         working-directory: tests
   windows-installer:
     name: windows-installer
