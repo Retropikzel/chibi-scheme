@@ -40,9 +40,9 @@ jobs:
           scoop update
           scoop bucket add extras
           scoop install nsis
-      - name: Show files
-        run: tree .
-      - name: Print NSIS version
-        run: C:\Users\runneradmin\scoop\shims\makensis.exe -VERSION
-      - name: Print NSIS compile flags
-        run: C:\Users\runneradmin\scoop\shims\makensis.exe -HDRINFO
+      - name: Create installer
+        run: C:\Users\runneradmin\scoop\shims\makensis.exe windows_installer.nsi
+      - uses: actions/upload-artifact@v7
+        with:
+          path: setup_chibi-scheme.exe
+          archive: false
