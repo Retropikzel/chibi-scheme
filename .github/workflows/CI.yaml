@@ -20,8 +20,8 @@ jobs:
       - name: Run in PATH
         run: chibi-scheme r7rs-tests.scm
         working-directory: tests
-  windows-build:
-    name: windows-build
+  msys2-build:
+    name: msys2-build
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
@@ -38,13 +38,6 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Install NSIS
-        run: |
-          iwr -useb get.scoop.sh -outfile 'install.ps1'
-          .\install.ps1 -RunAsAdmin
-          scoop update
-          scoop bucket add extras
-          scoop install nsis
       - uses: msys2/setup-msys2@v2
         with:
           update: true
@@ -52,7 +45,14 @@ jobs:
             make
             gcc
       - name: Build
-        run: msys2 -C "make PLATFORM=msys" && tree .
+        run: msys2 -C "make PLATFORM=msys"
+      - name: Install NSIS
+        run: |
+          iwr -useb get.scoop.sh -outfile 'install.ps1'
+          .\install.ps1 -RunAsAdmin
+          scoop update
+          scoop bucket add extras
+          scoop install nsis
       - name: Print NSIS version
         run: makensis -VERSION
       - name: Print NSIS compile flags
