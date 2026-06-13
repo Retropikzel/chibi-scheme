@@ -34,8 +34,6 @@ jobs:
             plocate
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
-      - name: Find msys-2.0.dll
-        run: msys2 -c "updatedb && locate msys-2.0.dll"
       - name: Install NSIS
         run: |
           iwr -useb get.scoop.sh -outfile 'install.ps1'
