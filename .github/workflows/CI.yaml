@@ -25,16 +25,26 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Download cygwin
-        run: curl -o setup-x86_64.exe https://cygwin.com/setup-x86_64.exe
-      - name: Install cygwin packages
-        run: ./setup-x86_64.exe -q -p gcc
       - name: Build
-        run: make # assumes GNUMake
+        run: make
       - name: Test
         run: make test-all
       - name: Setup
         run: sudo make install
       - name: Run in PATH
         run: chibi-scheme r7rs-tests.scm
+        working-directory: tests
+  windows-installer:
+    name: windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Download NSIS
+        run: curl -O nsis-setup.exe https://sourceforge.net/projects/nsis/files/NSIS%203/3.12/nsis-3.12-setup.exe/download
+      - name: Install NSIS
+        run: ./nsis-setup.exe /S
+      - name: Build
+        run: make && tree .
+      - name: Setup
+        run: sudo make install
         working-directory: tests
