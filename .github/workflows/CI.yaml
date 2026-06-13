@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        uses: lovasoa/setup-emscripten@master
+      - uses: lovasoa/setup-emscripten@master
         with:
             emscripten-version: '6.0.0'
       - name: Build
