@@ -32,7 +32,7 @@ jobs:
             make
             gcc
       - name: Build
-        run: msys2 -c "make PLATFORM=msys"
+        run: msys2 -c "make PLATFORM=msys chibi-scheme-static"
       - name: Install NSIS
         run: |
           iwr -useb get.scoop.sh -outfile 'install.ps1'
@@ -40,8 +40,6 @@ jobs:
           scoop update
           scoop bucket add extras
           scoop install nsis
-      - name: Copy msys-2.0.dll to build dir
-        run: cp "D:\a\_temp\setup-msys2\usr\bin\msys-2.0.dll" .
       - name: Create installer
         run: C:\Users\runneradmin\scoop\shims\makensis.exe windows_installer.nsi
       - uses: actions/upload-artifact@v7
