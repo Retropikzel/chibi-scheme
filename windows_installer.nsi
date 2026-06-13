@@ -49,7 +49,7 @@ section "install"
 
 	# Files added here should be removed by the uninstaller (see section "uninstall")
 	file "chibi-scheme.exe"
-	#file "libchibi-scheme.dll.0.12.0"
+	file "libchibi-scheme.dll.0.12.0"
 	#file "msys-2.0.dll"
 
 	# Add any other files for the install directory (license files, app data, etc) here
