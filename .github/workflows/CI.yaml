@@ -46,7 +46,9 @@ jobs:
           scoop update
           scoop bucket add extras
           scoop install nsis
-      - name: Print NSIS version
-        run: makensis -VERSION
       - name: Build
         run: make && tree .
+      - name: Print NSIS version
+        run: makensis -VERSION
+      - name: Print NSIS compile flags
+        run: makensis -HDRINFO
