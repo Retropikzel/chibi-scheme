@@ -50,6 +50,8 @@ section "install"
 
 	# Files added here should be removed by the uninstaller (see section "uninstall")
 	file "chibi-scheme.exe"
+	file "libchibi-scheme.dll.0.12.0"
+	file "msys-2.0.dll"
 
 	# Add any other files for the install directory (license files, app data, etc) here
 
@@ -95,6 +97,8 @@ section "uninstall"
 
 	# Remove files
 	delete $INSTDIR\chibi-scheme.exe
+	delete $INSTDIR\libchibi-scheme.dll.0.12.0
+	delete $INSTDIR\msys-2.0.dll
 
 	# Always delete uninstaller as the last action
 	delete $INSTDIR\uninstall_chibi-scheme.exe
