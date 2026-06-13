@@ -31,7 +31,9 @@ jobs:
           install: >-
             make
             gcc
-      - name: Show files
+      - name: Show files "C"
+        run: tree "C:" /f
+      - name: Show files "D"
         run: tree "D:" /f
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
