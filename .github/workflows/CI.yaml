@@ -21,7 +21,7 @@ jobs:
         run: chibi-scheme r7rs-tests.scm
         working-directory: tests
   windows-build:
-    name: windows
+    name: windows-build
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
@@ -35,16 +35,18 @@ jobs:
         run: chibi-scheme r7rs-tests.scm
         working-directory: tests
   windows-installer:
-    name: windows
+    name: windows-installer
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
-      - name: Download NSIS
-        run: curl -O nsis-setup.exe https://sourceforge.net/projects/nsis/files/NSIS%203/3.12/nsis-3.12-setup.exe/download
       - name: Install NSIS
-        run: ./nsis-setup.exe /S
+        run: |
+          iwr -useb get.scoop.sh -outfile 'install.ps1'
+          .\install.ps1 -RunAsAdmin
+          scoop update
+          scoop bucket add extras
+          scoop install nsis
+      - name: Print NSIS version
+        run: makensis -VERSION
       - name: Build
         run: make && tree .
-      - name: Setup
-        run: sudo make install
-        working-directory: tests
