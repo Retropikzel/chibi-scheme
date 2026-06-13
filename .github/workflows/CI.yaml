@@ -41,7 +41,7 @@ jobs:
           scoop bucket add extras
           scoop install nsis
       - name: Copy msys-2.0.dll to build dir
-        run: cp "C:\msys2\usr\bin\msys-2.0.dll" .
+        run: cp "D:\a\_temp\setup-msys2/usr/bin/msys-2.0.dll" .
       - name: Create installer
         run: C:\Users\runneradmin\scoop\shims\makensis.exe windows_installer.nsi
       - uses: actions/upload-artifact@v7
