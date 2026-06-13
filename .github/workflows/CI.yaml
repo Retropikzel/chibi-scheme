@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download cygwin
-        run: curl -O setup-x86_64.exe https://cygwin.com/setup-x86_64.exe
+        run: curl -o setup-x86_64.exe https://cygwin.com/setup-x86_64.exe
       - name: Install cygwin packages
         run: setup-x86_64.exe -q -p gcc
       - name: Build
