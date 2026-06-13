@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: 'cygwin/cygwin-install-action@v6'
         with:
-          packages: gcc
+          packages: gcc-core
       - name: Build
         run: make PLATFORM=cygwin
   windows-installer:
@@ -37,7 +37,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: 'cygwin/cygwin-install-action@v6'
         with:
-          packages: gcc
+          packages: gcc-core
       - name: Install NSIS
         run: |
           iwr -useb get.scoop.sh -outfile 'install.ps1'
