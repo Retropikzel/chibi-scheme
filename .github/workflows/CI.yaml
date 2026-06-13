@@ -20,7 +20,7 @@ jobs:
       - name: Run in PATH
         run: chibi-scheme r7rs-tests.scm
         working-directory: tests
-  build:
+  windows-build:
     name: windows
     runs-on: windows-latest
     steps:
