@@ -32,7 +32,7 @@ jobs:
             make
             gcc
       - name: Find dlls
-        run: msys2 -c "find C:\ -name \"*.dll\""
+        run: dir /s *.dll*
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
       - name: Install NSIS
