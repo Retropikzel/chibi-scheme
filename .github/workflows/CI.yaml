@@ -35,6 +35,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: 'cygwin/cygwin-install-action@v6'
+        with:
+          packages: gcc
       - name: Install NSIS
         run: |
           iwr -useb get.scoop.sh -outfile 'install.ps1'
