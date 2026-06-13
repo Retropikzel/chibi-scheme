@@ -31,21 +31,5 @@ jobs:
           install: >-
             make
             gcc
-            findutils
-      - name: search dll files
-        run: msys2 -c "find / -name \"*.dll\""
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
-      - name: Install NSIS
-        run: |
-          iwr -useb get.scoop.sh -outfile 'install.ps1'
-          .\install.ps1 -RunAsAdmin
-          scoop update
-          scoop bucket add extras
-          scoop install nsis
-      - name: Create installer
-        run: C:\Users\runneradmin\scoop\shims\makensis.exe windows_installer.nsi
-      - uses: actions/upload-artifact@v7
-        with:
-          path: setup_chibi-scheme.exe
-          archive: false
