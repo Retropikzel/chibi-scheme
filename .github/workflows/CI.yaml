@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Build
-        run: make
+        run: make PLATFORM=windows
       - name: Test
         run: make test-all
       - name: Setup
@@ -47,7 +47,7 @@ jobs:
           scoop bucket add extras
           scoop install nsis
       - name: Build
-        run: make && tree .
+        run: make PLATFORM=windows && tree .
       - name: Print NSIS version
         run: makensis -VERSION
       - name: Print NSIS compile flags
