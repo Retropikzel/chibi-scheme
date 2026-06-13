@@ -31,8 +31,8 @@ jobs:
           install: >-
             make
             gcc
-      - name: Find dlls
-        run: dir /s *.dll*
+      - name: Show files
+        run: tree "D:"
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
       - name: Install NSIS
