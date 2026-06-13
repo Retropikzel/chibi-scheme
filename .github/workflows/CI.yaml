@@ -20,3 +20,21 @@ jobs:
       - name: Run in PATH
         run: chibi-scheme r7rs-tests.scm
         working-directory: tests
+  build:
+    name: windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Download cygwin
+        run: wget https://cygwin.com/setup-x86_64.exe
+      - name: Install cygwin packages
+        run: setup-x86_64.exe -q -p gcc
+      - name: Build
+        run: make # assumes GNUMake
+      - name: Test
+        run: make test-all
+      - name: Setup
+        run: sudo make install
+      - name: Run in PATH
+        run: chibi-scheme r7rs-tests.scm
+        working-directory: tests
