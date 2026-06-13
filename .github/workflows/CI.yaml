@@ -24,10 +24,10 @@ jobs:
     name: windows-build
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v6
       - uses: 'cygwin/cygwin-install-action@<version>'
           with:
             packages: gcc
+      - uses: actions/checkout@v6
       - name: Build
         run: make
         working-directory: tests
