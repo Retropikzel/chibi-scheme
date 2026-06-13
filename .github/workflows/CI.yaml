@@ -41,6 +41,6 @@ jobs:
           scoop bucket add extras
           scoop install nsis
       - name: Print NSIS version
-        run: makensis -VERSION
+        run: C:\Users\runneradmin\scoop\shims\makensis.exe -VERSION
       - name: Print NSIS compile flags
-        run: makensis -HDRINFO
+        run: C:\Users\runneradmin\scoop\shims\makensis.exe -HDRINFO
