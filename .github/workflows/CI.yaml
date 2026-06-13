@@ -40,4 +40,4 @@ jobs:
       - uses: actions/checkout@v6
       - uses: emscripten-core/setup-emsdk@v16
       - name: Build
-        run: make chibi-scheme-static js
+        run: make PLATFORM=emscripten js
