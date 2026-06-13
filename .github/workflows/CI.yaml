@@ -40,6 +40,6 @@ jobs:
       - uses: actions/checkout@v6
       - uses: lovasoa/setup-emscripten@master
         with:
-            emscripten-version: '6.0.0-git'
+            emscripten-version: 'latest'
       - name: Build
         run: make js
