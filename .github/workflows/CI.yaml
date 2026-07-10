@@ -61,7 +61,7 @@ jobs:
       - env:
           MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
         run: |
-          find C:\ -name msys-2.0.dll
+          #find C:\ -name msys-2.0.dll
           find D:\ -name msys-2.0.dll
           #cp $(find $env:MSYS2_LOCATION -name msys-2.0.dll) .
           #find $env:MSYS2_LOCATION -name msys-gcc_s-seh-1.dll
