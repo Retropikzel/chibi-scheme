@@ -47,14 +47,17 @@ jobs:
             make
             gcc
             mingw-w64-x86_64-nsis
+            findutils
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
       - name: Tests
         run: msys2 -c "make PLATFORM=msys test"
       - name: Installer
         run: |
-          cp ${env:MSYS2_LOCATION}/usr/bin/msys-2.0.dll .
-          cp ${env:MSYS2_LOCATION}/usr/bin/msys-gcc_s-seh-1.dll .
+          find ${env:MSYS2_LOCATION} -name msys-2.0.dll
+          cp $(find ${env:MSYS2_LOCATION} -name msys-2.0.dll) .
+          find $env:MSYS2_LOCATION -name msys-gcc_s-seh-1.dll
+          cp $(find $env:MSYS2_LOCATION -name msys-gcc_s-seh-1.dll) .
           /mingw64/bin/makensis installer.nsi
       - uses: actions/upload-artifact@v7
         with:
