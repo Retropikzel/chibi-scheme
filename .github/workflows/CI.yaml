@@ -48,19 +48,19 @@ jobs:
             gcc
             mingw-w64-x86_64-nsis
             findutils
-      - env:
-          MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
       - name: Build
         run: msys2 -c "make PLATFORM=msys"
       - name: Tests
         run: msys2 -c "make PLATFORM=msys test"
       - name: Installer
+        env:
+          MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
         run: |
-          find $env:MSYS2_LOCATION -name msys-2.0.dll
-          cp $(find $env:MSYS2_LOCATION -name msys-2.0.dll) .
-          find $env:MSYS2_LOCATION -name msys-gcc_s-seh-1.dll
-          cp $(find $env:MSYS2_LOCATION -name msys-gcc_s-seh-1.dll) .
-          /mingw64/bin/makensis installer.nsi
+          find "${{ env.MSYS2_LOCATION }}" -name msys-2.0.dll
+          #cp $(find $env:MSYS2_LOCATION -name msys-2.0.dll) .
+          #find $env:MSYS2_LOCATION -name msys-gcc_s-seh-1.dll
+          #cp $(find $env:MSYS2_LOCATION -name msys-gcc_s-seh-1.dll) .
+          #/mingw64/bin/makensis installer.nsi
       - uses: actions/upload-artifact@v7
         with:
           name: setup_chibi-scheme.exe
