@@ -53,12 +53,11 @@ jobs:
             make
             gcc
             mingw-w64-x86_64-nsis
-            findutils
-      - env:
-          MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
+      -name: windows-installer
         run: |
           make PLATFORM=msys
           make PLATFORM=msys test
+          ls
           cp /usr/bin/msys-2.0.dll .
           cp /usr/bin/msys-gcc_s-seh-1.dll .
           /mingw64/bin/makensis installer.nsi
