@@ -40,7 +40,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: msys2/setup-msys2@v2
+      - uses: msys2/setup-msys2@v2.32.0
         with:
           update: true
           install: >-
@@ -53,9 +53,9 @@ jobs:
       - name: Tests
         run: msys2 -c "make PLATFORM=msys test"
       - env:
-          MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
+          MSYS2_LOCATION: "${{ steps.msys2.outputs.msys2-location }}"
         run: |
-          find "$env:MSYS2_LOCATION" -name msys-2.0.dll
+          find "${{ env.MSYS2_LOCATION }}" -name msys-2.0.dll
           #cp $(find $env:MSYS2_LOCATION -name msys-2.0.dll) .
           #find $env:MSYS2_LOCATION -name msys-gcc_s-seh-1.dll
           #cp $(find $env:MSYS2_LOCATION -name msys-gcc_s-seh-1.dll) .
