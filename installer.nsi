@@ -181,7 +181,7 @@ section "install"
 
     # Files
     file "chibi-scheme.exe"
-    file /r lib/
+    file /r lib\
     file "libchibi-scheme.dll.0.12.0"
     file "msys-2.0.dll"
     file "msys-gcc_s-seh-1.dll"
