@@ -55,9 +55,9 @@ jobs:
             mingw-w64-x86_64-nsis
             findutils
       - name: Build
-        run: msys2 -c "make PLATFORM=msys"
+        run: make PLATFORM=msys
       - name: Tests
-        run: msys2 -c "make PLATFORM=msys test"
+        run: make PLATFORM=msys test
       - env:
           MSYS2_LOCATION: "${{ steps.msys2.outputs.msys2-location }}"
         run: |
