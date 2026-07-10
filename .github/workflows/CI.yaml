@@ -35,3 +35,27 @@ jobs:
         run: msys2 -c "make PLATFORM=msys"
       - name: Tests
         run: msys2 -c "make PLATFORM=msys test"
+  windows-installer:
+    name: windows-installer
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            make
+            gcc
+            mingw-w64-x86_64-nsis
+      - name: Build
+        run: msys2 -c "make PLATFORM=msys"
+      - name: Tests
+        run: msys2 -c "make PLATFORM=msys test"
+      - name: Installer
+        run: |
+          cp /usr/bin/msys-2.0.dll .
+          cp /usr/bin/msys-gcc_s-seh-1.dll .
+          /mingw64/bin/makensis installer.nsi
+      - uses: actions/upload-artifact@v7
+        with: setup_chibi-scheme.exe
+          path: setup_chibi-scheme.exe
