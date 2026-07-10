@@ -180,11 +180,12 @@ section "install"
     setOutPath $INSTDIR
 
     # Files
-    file "chibi-scheme.exe"
+    file chibi-scheme.exe
     file /r lib
-    file "libchibi-scheme.dll.0.12.0"
-    file "msys-2.0.dll"
-    file "msys-gcc_s-seh-1.dll"
+    file /r tools
+    file libchibi-scheme.dll.0.12.0
+    file msys-2.0.dll
+    file msys-gcc_s-seh-1.dll
 
     # Uninstaller
     writeUninstaller "$INSTDIR\uninstall.exe"
@@ -214,6 +215,12 @@ section "install"
     Push "$INSTDIR"
     Call AddToPath
 
+    # Install snow-chibi.bat
+    FileOpen $9 snow-chibi.bat w ;Opens a Empty File and fills it
+    FileWrite $9 "cd $INSTDIR$\r$\n"
+    FileWrite $9 "start /WAIT /B chibi-scheme.exe tools/snow-chibi.scm$\r$\n"
+    FileClose $9 ;Closes the filled file
+
 sectionEnd
 
 # Uninstaller
@@ -236,8 +243,7 @@ section "uninstall"
     # Remove files
     delete $INSTDIR\chibi-scheme.exe
     delete $INSTDIR\lib
-    delete $INSTDIR\doc
-    delete $INSTDIR\tests
+    delete $INSTDIR\tools
     delete $INSTDIR\libchibi-scheme.dll.0.12.0
     delete $INSTDIR\msys-2.0.dll
     delete $INSTDIR\msys-gcc_s-seh-1.dll
