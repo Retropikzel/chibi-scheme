@@ -236,6 +236,8 @@ section "uninstall"
     # Remove files
     delete $INSTDIR\chibi-scheme.exe
     delete $INSTDIR\lib
+    delete $INSTDIR\doc
+    delete $INSTDIR\tests
     delete $INSTDIR\libchibi-scheme.dll.0.12.0
     delete $INSTDIR\msys-2.0.dll
     delete $INSTDIR\msys-gcc_s-seh-1.dll
