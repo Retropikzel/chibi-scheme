@@ -56,4 +56,5 @@ jobs:
           cd emsdk
           ./emsdk install latest
           ./emsdk activate latest
-           make js
+          cd ..
+          make js
