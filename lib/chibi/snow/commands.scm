@@ -1752,8 +1752,8 @@
              `(gosh -A ,install-dir ,file)))
         ((guile)
          (if lib-path
-             `(guile -L ,install-dir -L ,lib-path ,file)
-             `(guile -L ,install-dir ,file)))
+             `(guile --r7rs -L ,install-dir -L ,lib-path ,file)
+             `(guile --r7rs -L ,install-dir ,file)))
         ((kawa)
          (let ((install-dir (path-resolve install-dir (current-directory))))
            (if lib-path
@@ -1776,11 +1776,13 @@
         ((mit-scheme)
          (let ((install-dir (path-resolve install-dir (current-directory))))
            (if lib-path
-               `(mit-scheme --batch-mode --load ,file --eval "(exit 0)")
+               `(mit-scheme --prepend-library lib-path
+                            --batch-mode --load ,file --eval "(exit 0)")
                `(mit-scheme --batch-mode --load ,file --eval "(exit 0)"))))
         ((mosh)
          (if lib-path
-             `(mosh ,(string-append "--loadpath=" install-dir) --loadpath= ,lib-path ,file)
+             `(mosh ,(string-append "--loadpath=" install-dir)
+                    ,(string-append "--loadpath=" lib-path) ,file)
              `(mosh ,(string-append "--loadpath=" install-dir) ,file)))
         ((larceny)
          (if lib-path
