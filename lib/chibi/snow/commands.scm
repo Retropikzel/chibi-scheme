@@ -2406,8 +2406,6 @@
            (cons binld-file installed-files))
           (else installed-files))))
 
-;; Racket can only load files with .rkt suffix. So for each library we create
-;; a file that sets language to r7rs and includes the .sld file
 (define (racket-installer impl cfg library dir)
   (let* ((source-rkt-file
            (make-path dir
@@ -2417,17 +2415,7 @@
          (dest-rkt-file
            (make-path install-dir
                       (string-append (library->path cfg library) ".rkt")))
-         (path (make-path install-dir dest-rkt-file))
-         (include-filename (string-append
-                             (path-strip-directory (path-strip-extension path))
-                             ".sld"))
          (installed-files (default-installer impl cfg library dir)))
-    (with-output-to-file
-      source-rkt-file
-      (lambda ()
-        (map display
-             (list "#lang r7rs" #\newline
-                   "(include \"" include-filename "\")" #\newline))))
     (install-file cfg source-rkt-file dest-rkt-file)
     (cons dest-rkt-file installed-files)))
 
@@ -2708,6 +2696,29 @@
                          " - install anyway?"))
          library)))
 
+;; Racket can only load files with .rkt suffix. So for each library we create
+;; a file that sets language to r7rs and includes the .sld file
+(define (racket-builder impl cfg library dir)
+    (let* ((source-rkt-file
+           (make-path dir
+           (string-append (path-strip-extension (get-library-file cfg library))
+                          ".rkt")))
+         (install-dir (get-install-source-dir impl cfg))
+         (dest-rkt-file
+           (make-path install-dir
+                      (string-append (library->path cfg library) ".rkt")))
+         (path (make-path install-dir dest-rkt-file))
+         (include-filename (string-append
+                             (path-strip-directory (path-strip-extension path))
+                             ".sld")))
+    (with-output-to-file
+      source-rkt-file
+      (lambda ()
+        (map display
+             (list "#lang r7rs" #\newline
+                   "(include \"" include-filename "\")" #\newline))))
+    library))
+
 (define (lookup-builder builder)
   (case builder
     ((chibi) chibi-builder)
@@ -2717,11 +2728,12 @@
     ((guile) guile-builder)
     ((kawa) kawa-builder)
     ((mit-scheme) mit-scheme-builder)
+    ((racket) racket-builder)
     (else default-builder)))
 
 (define (builder-for-implementation impl cfg)
   (case impl
-    ((chibi chicken cyclone gambit guile kawa mit-scheme) impl)
+    ((chibi chicken cyclone gambit guile kawa mit-scheme racket) impl)
     (else 'default)))
 
 (define (build-library impl cfg library dir)
