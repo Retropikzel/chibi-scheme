@@ -1528,164 +1528,172 @@
      char-whitespace?)))
 
 (define (get-install-dirs impl cfg)
-  (case impl
-    ((capyscheme)
-     (list
-       (make-path
-         (process->string
-           '(capy -c "(printf \"~a\" (car %load-path))")))))
-    ((chibi)
-     (let* ((dirs
-             (reverse
-              (cond-expand
-               (chibi (eval '(current-module-path) (environment '(chibi))))
-               (else (process->sexp
-                      '(chibi-scheme -q -p "(current-module-path)"))))))
-            (share-dir (find (lambda (d) (string-contains d "/share/")) dirs)))
-       (if share-dir
-           (cons share-dir (delete share-dir dirs))
-           dirs)))
-    ((chicken)
-     (let ((dir (get-chicken-repo-path)))
-       (list
-        (if (file-exists? dir)  ; repository-path should always exist
-            dir
-            (make-path (or (conf-get cfg 'install-prefix) "lib")
-                       impl
-                       (get-chicken-binary-version cfg))))))
-    ((cyclone)
-     (let ((dir (let ((lib-path (get-environment-variable "CYCLONE_LIBRARY_PATH")))
-                  (if lib-path
-                      (car (string-split lib-path #\:)) ; searches only in the first path set
-                      (string-trim (process->string '(icyc -p "(Cyc-installation-dir 'sld)"))
-                                   char-whitespace?)))))
-       (list (or dir "/usr/local/share/cyclone/"))))
-    ((gambit)
-     (list (make-path (get-environment-variable "HOME")
-                      ".gambit_userlib")))
-    ((generic)
-     (list (make-path (or (conf-get cfg 'install-prefix)
-                          (cond-expand (windows (get-environment-variable "LOCALAPPDATA"))
-                                       (else "/usr/local"))
-                          "/lib/snow"))))
-    ((gauche)
-     (list
-      (let ((dir (string-trim
-                  (process->string '(gauche-config "--sitelibdir"))
-                  char-whitespace?)))
-        (or (and (string? dir) (> (string-length dir) 0)
-                 (eqv? #\/ (string-ref dir 0))
-                 dir)
-            "/usr/local/share/gauche/"))))
-    ((guile)
-     (let ((path
-             (guard (exn (else #f))
-               (process->sexp
-                 `(guile -c ,(write-to-string
-                               `(write
-                                  (string-append
-                                    (cdr (assq 'pkgdatadir %guile-build-info))
-                                    (string (integer->char 47))
-                                    (effective-version)))))))))
+  (guard
+    (condition
+      (else
+        (display (string-append "Failed to get installation directory for "
+                                (symbol->string impl)
+                                (string #\newline))
+                 (current-error-port))
+        condition))
+    (case impl
+      ((capyscheme)
        (list
          (make-path
-           (or (conf-get cfg 'install-prefix) "")
-           (if (string? path)
-             path
-             "/usr/local/share/guile/")))))
-    ((kawa)
-     (list
-       (make-path
-         (if (conf-get cfg 'install-prefix) (conf-get cfg 'install-prefix) "")
-         (let ((kawa-classpath
-                 (string-split
-                   (process->string
-                     `(kawa -e "(display (get-environment-variable \"CLASSPATH\"))"))
-                   #\:)))
-           (if (or (null? kawa-classpath)
-                   (not (string-suffix? "kawa.jar" (car kawa-classpath))))
-             "/usr/local/share/kawa/lib"
-             (string-copy (car kawa-classpath)
-                          0
-                          (- (string-length (car kawa-classpath)) 8)))))))
-    ((loko)
-     (list "/usr/local/share/r6rs"))
-    ((meevax)
-     (list
-       (make-path
-         (car (process->string-list '(meevax "--library-directories"))))))
-    ((mit-scheme)
-     (list
-      (make-path
-      (string-trim
-        ;; Get the last line of output because there might be warnings and such
-         (car
-           (reverse
-             (string-split
-               (process->string
-                 '(mit-scheme
-                    --batch-mode --eval
-                    "(display (->namestring (system-library-directory-pathname)))"
-                    --eval "(exit 0)"))
-               #\newline)))
-       char-whitespace?)
-       "libraries")))
-    ((larceny)
-     (list
-      (make-path
-       (string-trim
-        (process->string
-         '(larceny -quiet -nobanner -- -e
-                   "(begin (display (getenv \"LARCENY_ROOT\")) (exit))"))
-        char-whitespace?)
-       "lib/Snow")))
-    ((mosh)
-     (call-with-temp-file "snow-mosh.scm"
-      (lambda (tmp-path out preserve)
-       (with-output-to-file tmp-path
-        (lambda ()
-         (display "(import (scheme base) (scheme write) (mosh config))")
-         (newline)
-         (display "(display (get-config \"library-path\"))")))
-       (list (make-path (process->string `(mosh ,tmp-path)) "lib")))))
-    ((racket)
-     (list
-      (make-path
-       (process->string
-        '(racket -I racket/base -e "(display (find-system-path 'collects-dir))")))))
-    ((sagittarius)
-     (list (make-path
-            (process->string
-             '(sagittarius -I "(sagittarius)" -e "(display (car (load-path))) (exit)")))))
-    ((skint)
-     (list
-       (string-trim
-         (string-trim
            (process->string
-             '(skint -qe "(begin (import (only (skint hidden) base-library-directory)) (base-library-directory))"))
-           #\newline)
-         #\")))
-    ((stklos)
-     (list (make-path
-            (process->string
-             '(stklos -e "(display (install-path #:libdir))")))))
-    ((tr7)
-     (list (make-path
-            (process->string
-             '(tr7i -c "(import (scheme base) (scheme write) (tr7 misc)) (display (car (scheme-paths)))")))))
-    ((ypsilon)
-      (call-with-temp-file "snow-ypsilon.scm"
-       (lambda (tmp-path out preserve)
+             '(capy -c "(printf \"~a\" (car %load-path))")))))
+      ((chibi)
+       (let* ((dirs
+               (reverse
+                (cond-expand
+                 (chibi (eval '(current-module-path) (environment '(chibi))))
+                 (else (process->sexp
+                        '(chibi-scheme -q -p "(current-module-path)"))))))
+              (share-dir (find (lambda (d) (string-contains d "/share/")) dirs)))
+         (if share-dir
+             (cons share-dir (delete share-dir dirs))
+             dirs)))
+      ((chicken)
+       (let ((dir (get-chicken-repo-path)))
+         (list
+          (if (file-exists? dir)  ; repository-path should always exist
+              dir
+              (make-path (or (conf-get cfg 'install-prefix) "lib")
+                         impl
+                         (get-chicken-binary-version cfg))))))
+      ((cyclone)
+       (let ((dir (let ((lib-path (get-environment-variable "CYCLONE_LIBRARY_PATH")))
+                    (if lib-path
+                        (car (string-split lib-path #\:)) ; searches only in the first path set
+                        (string-trim (process->string '(icyc -p "(Cyc-installation-dir 'sld)"))
+                                     char-whitespace?)))))
+         (list (or dir "/usr/local/share/cyclone/"))))
+      ((gambit)
+       (list (make-path (get-environment-variable "HOME")
+                        ".gambit_userlib")))
+      ((generic)
+       (list (make-path (or (conf-get cfg 'install-prefix)
+                            (cond-expand (windows (get-environment-variable "LOCALAPPDATA"))
+                                         (else "/usr/local"))
+                            "/lib/snow"))))
+      ((gauche)
+       (list
+        (let ((dir (string-trim
+                    (process->string '(gauche-config "--sitelibdir"))
+                    char-whitespace?)))
+          (or (and (string? dir) (> (string-length dir) 0)
+                   (eqv? #\/ (string-ref dir 0))
+                   dir)
+              "/usr/local/share/gauche/"))))
+      ((guile)
+       (let ((path
+               (guard (exn (else #f))
+                 (process->sexp
+                   `(guile -c ,(write-to-string
+                                 `(write
+                                    (string-append
+                                      (cdr (assq 'pkgdatadir %guile-build-info))
+                                      (string (integer->char 47))
+                                      (effective-version)))))))))
+         (list
+           (make-path
+             (or (conf-get cfg 'install-prefix) "")
+             (if (string? path)
+               path
+               "/usr/local/share/guile/")))))
+      ((kawa)
+       (list
+         (make-path
+           (if (conf-get cfg 'install-prefix) (conf-get cfg 'install-prefix) "")
+           (let ((kawa-classpath
+                   (string-split
+                     (process->string
+                       `(kawa -e "(display (get-environment-variable \"CLASSPATH\"))"))
+                     #\:)))
+             (if (or (null? kawa-classpath)
+                     (not (string-suffix? "kawa.jar" (car kawa-classpath))))
+               "/usr/local/share/kawa/lib"
+               (string-copy (car kawa-classpath)
+                            0
+                            (- (string-length (car kawa-classpath)) 8)))))))
+      ((loko)
+       (list "/usr/local/share/r6rs"))
+      ((meevax)
+       (list
+         (make-path
+           (car (process->string-list '(meevax "--library-directories"))))))
+      ((mit-scheme)
+       (list
+        (make-path
+        (string-trim
+          ;; Get the last line of output because there might be warnings and such
+           (car
+             (reverse
+               (string-split
+                 (process->string
+                   '(mit-scheme
+                      --batch-mode --eval
+                      "(display (->namestring (system-library-directory-pathname)))"
+                      --eval "(exit 0)"))
+                 #\newline)))
+         char-whitespace?)
+         "libraries")))
+      ((larceny)
+       (list
+        (make-path
+         (string-trim
+          (process->string
+           '(larceny -quiet -nobanner -- -e
+                     "(begin (display (getenv \"LARCENY_ROOT\")) (exit))"))
+          char-whitespace?)
+         "lib/Snow")))
+      ((mosh)
+       (call-with-temp-file "snow-mosh.scm"
+        (lambda (tmp-path out preserve)
          (with-output-to-file tmp-path
-                              (lambda ()
-                                (display "(import (core))")
-                                (newline)
-                                (display "(display (car (scheme-library-paths)))")))
-         (list (make-path (process->string `(ypsilon --r7rs ,tmp-path)))))))
-    (else
-     (list (make-path (or (conf-get cfg 'install-prefix) "/usr/local")
-                      "share/snow"
-                      impl)))))
+          (lambda ()
+           (display "(import (scheme base) (scheme write) (mosh config))")
+           (newline)
+           (display "(display (get-config \"library-path\"))")))
+         (list (make-path (process->string `(mosh ,tmp-path)) "lib")))))
+      ((racket)
+       (list
+        (make-path
+         (process->string
+          '(racket -I racket/base -e "(display (find-system-path 'collects-dir))")))))
+      ((sagittarius)
+       (list (make-path
+              (process->string
+               '(sagittarius -I "(sagittarius)" -e "(display (car (load-path))) (exit)")))))
+      ((skint)
+       (list
+         (string-trim
+           (string-trim
+             (process->string
+               '(skint -qe "(begin (import (only (skint hidden) base-library-directory)) (base-library-directory))"))
+             #\newline)
+           #\")))
+      ((stklos)
+       (list (make-path
+              (process->string
+               '(stklos -e "(display (install-path #:libdir))")))))
+      ((tr7)
+       (list (make-path
+              (process->string
+               '(tr7i -c "(import (scheme base) (scheme write) (tr7 misc)) (display (car (scheme-paths)))")))))
+      ((ypsilon)
+        (call-with-temp-file "snow-ypsilon.scm"
+         (lambda (tmp-path out preserve)
+           (with-output-to-file tmp-path
+                                (lambda ()
+                                  (display "(import (core))")
+                                  (newline)
+                                  (display "(display (car (scheme-library-paths)))")))
+           (list (make-path (process->string `(ypsilon --r7rs ,tmp-path)))))))
+      (else
+       (list (make-path (or (conf-get cfg 'install-prefix) "/usr/local")
+                        "share/snow"
+                        impl))))))
 
 (define (get-install-library-dirs impl cfg)
   (case impl
