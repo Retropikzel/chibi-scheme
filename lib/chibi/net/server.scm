@@ -28,6 +28,24 @@
    (else
     (error "expected a listener socket, fileno or thunk" x))))
 
+(define (close-server-connection in out sock)
+  ;; Half-close first so the peer can read the response before any reset
+  ;; caused by unread input. Discard input for at most one second,
+  ;; regardless of client framing or whether the peer closes its write side.
+  (flush-output out)
+  (close-output-port out)
+  (let ((buffer (make-bytevector 1024))
+        (deadline (+ (current-jiffy) (jiffies-per-second))))
+    (let lp ()
+      (let ((timeout (/ (- deadline (current-jiffy))
+                        (exact->inexact (jiffies-per-second)))))
+        (if (positive? timeout)
+            (let ((n (receive!/non-blocking sock buffer timeout)))
+              (if (and n (positive? n))
+                  (lp)))))))
+  (close-input-port in)
+  (close-file-descriptor sock))
+
 (define (run-net-server listener-or-addr handler . o)
   (let ((listener-thunk (make-listener-thunk listener-or-addr))
         (max-requests
@@ -46,7 +64,7 @@
                         (log-error "net-server: couldn't create port: " sock)
                         (close-file-descriptor sock)))
                (cons (open-input-file-descriptor sock)
-                     (open-output-file-descriptor sock)))))
+                     (open-output-file-descriptor sock #t)))))
         (protect (exn
                   (else (log-error "net-server: error in request: " count)
                         (print-exception exn)
@@ -55,10 +73,7 @@
                         (close-output-port (cdr ports))
                         (close-file-descriptor sock)))
           (handler (car ports) (cdr ports) sock addr)
-          (flush-output (cdr ports))
-          (close-input-port (car ports))
-          (close-output-port (cdr ports))
-          (close-file-descriptor sock)))
+          (close-server-connection (car ports) (cdr ports) sock)))
       (log-debug "net-server: finished: " count))
     (let ((requests 0))
       (let serve ((count 0))

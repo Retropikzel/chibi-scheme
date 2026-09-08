@@ -315,7 +315,7 @@
           (let* ((j (string-find str split-char? i))
                  (k (string-find str #\= i j))
                  (cell
-                  (if (string-cursor<? k end)
+                  (if (string-cursor<? k j)
                       (cons (uri-decode (substring-cursor str i k) plus?)
                             (uri-decode (substring-cursor str (string-cursor-next str k) j) plus?))
                       (cons (uri-decode (substring-cursor str i j) plus?) #f))))

@@ -281,13 +281,16 @@ test-r7rs: chibi-scheme$(EXE)
 test-syntax: chibi-scheme$(EXE)
 	$(CHIBI) tests/syntax-tests.scm
 
+test-net: chibi-scheme$(EXE)
+	$(CHIBI) tests/net-tests.scm
+
 test: test-r7rs
 
 test-safe-string-cursors: chibi-scheme$(EXE)
 	$(CHIBI) -Dsafe-string-cursors tests/r7rs-tests.scm
 	$(CHIBI) -Dsafe-string-cursors tests/lib-tests.scm
 
-test-all: test test-syntax test-libs test-ffi test-division
+test-all: test test-syntax test-libs test-ffi test-division test-net
 
 test-dist: test-all test-memory test-build
 
