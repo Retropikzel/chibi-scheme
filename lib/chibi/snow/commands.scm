@@ -776,20 +776,20 @@
          (pkgs (filter-map
                  (lambda (pkg-file)
                    (let* ((pkg (guard (exn (else #f)) (package-file-meta pkg-file)))
-                          (hash (if (conf-get cfg '(command git-index tag))
+                          (cfg-tag (conf-get cfg '(command git-index tag)))
+                          (hash (if cfg-tag
                                   '()
                                   (process->pair-or-null 'hash "git rev-parse HEAD")))
                           (current-git-tag (process->pair-or-null
                                         'tag
                                         "git describe --exact-match --tags --abbrev=0"))
-                          (cfg-tag (conf-get cfg '(command git-index tag)))
                           (tag (if cfg-tag `(tag ,cfg-tag) current-git-tag))
                           (url (process->pair-or-null 'url "git config --get remote.origin.url"))
                           (updated (tai->rfc-3339 (current-second))))
                      (cond ((not pkg)
                             (error "Could not get package metadata" pkg-file))
                            ((or (null? url)
-                                (and (not (conf-get cfg '(command git-index tag)))
+                                (and (not cfg-tag)
                                      (null? hash)))
                             (error "Directory is not a git repository"))
                            ((and (not (null? hash))
