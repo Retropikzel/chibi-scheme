@@ -124,42 +124,25 @@
             (make-interval (vector-copy (interval-lb iv) (- n rd))
                            (vector-copy (interval-ub iv) (- n rd))))))
 
-(define (rev-index-next! rev-index rev-lowers rev-uppers)
-  (cond
-   ((null? rev-index) #f)
-   ((< (caar rev-index) (- (car rev-uppers) 1))
-    (set-car! (car rev-index) (+ 1 (caar rev-index)))
-    #t)
-   (else
-    (set-car! (car rev-index) (car rev-lowers))
-    (rev-index-next! (cdr rev-index) (cdr rev-lowers) (cdr rev-uppers)))))
+(define (make-reverse-index-cursor iv)
+  (let ((reverse-lowers (reverse (interval-lower-bounds->list iv)))
+        (reverse-uppers (reverse (interval-upper-bounds->list iv))))
 
-(define (interval-cursor iv)
-  (let* ((rev-lowers (reverse (interval-lower-bounds->list iv)))
-         (rev-uppers (reverse (interval-upper-bounds->list iv)))
-         (multi-index (interval-lower-bounds->list iv))
-         (rev-index (pair-fold cons '() multi-index)))
-    (vector multi-index rev-index rev-lowers rev-uppers)))
+    (lambda (reverse-index)
 
-(define (interval-cursor-get ivc)
-  (vector-ref ivc 0))
+      (define (helper reverse-index reverse-lowers reverse-uppers)
+        (and (not (null? reverse-lowers))
+             (if (< (car reverse-index) (- (car reverse-uppers) 1))
+                 (cons (+ (car reverse-index) 1) (cdr reverse-index))
+                 (let ((reverse-index-tail
+                        (helper (cdr reverse-index)
+                                (cdr reverse-lowers)
+                                (cdr reverse-uppers))))
+                   (and reverse-index-tail
+                        (cons (car reverse-lowers) reverse-index-tail))))))
 
-(define (interval-cursor-next! ivc)
-  (and (rev-index-next! (vector-ref ivc 1)
-                        (vector-ref ivc 2)
-                        (vector-ref ivc 3))
-       (vector-ref ivc 0)))
+      (helper reverse-index reverse-lowers reverse-uppers))))
 
-(define (interval-cursor-next ivc)
-  (let* ((multi-index (list-copy (vector-ref ivc 0)))
-         (ivc (vector multi-index
-                      (pair-fold cons '() multi-index)
-                      (vector-ref ivc 2)
-                      (vector-ref ivc 3))))
-    (and (rev-index-next! (vector-ref ivc 1)
-                          (vector-ref ivc 2)
-                          (vector-ref ivc 3))
-         (values ivc (vector-ref ivc 0)))))
 
 (define (interval-fold-left f kons knil iv)
   (if (interval-empty? iv)
@@ -181,11 +164,13 @@
                          ((>= j end1) acc))))
                ((>= i end0) acc))))
         (else
-         (let ((ivc (interval-cursor iv)))
-           (let lp ((acc knil))
-             (let ((acc (kons acc (apply f (interval-cursor-get ivc)))))
-               (if (interval-cursor-next! ivc)
-                   (lp acc)
+         (let ((ric (make-reverse-index-cursor iv)))
+           (let lp ((acc knil)
+                    (reverse-index (reverse (interval-lower-bounds->list iv))))
+             (let* ((acc (kons acc (apply f (reverse reverse-index))))
+                    (reverse-index (ric reverse-index)))
+               (if reverse-index
+                   (lp acc reverse-index)
                    acc))))))))
 
 (define (interval-fold kons knil iv)
@@ -194,12 +179,33 @@
 (define (interval-fold-right f kons knil iv)
   (if (interval-empty? iv)
       knil
-      (let ((ivc (interval-cursor iv)))
-        (let lp ()
-          (let ((item (apply f (interval-cursor-get ivc))))
-            (if (interval-cursor-next! ivc)
-                (kons item (lp))
-                (kons item knil)))))))
+      (case (interval-dimension iv)
+        ((1)
+         (let ((end (interval-upper-bound iv 0)))
+           (let lp ((i (interval-lower-bound iv 0)))
+             (if (= i end)
+                 knil
+                 (let ((item (f i)))
+                   (kons item (lp (+ i 1))))))))
+        ((2)
+         (let ((end0 (interval-upper-bound iv 0))
+               (start1 (interval-lower-bound iv 1))
+               (end1 (interval-upper-bound iv 1)))
+           (let lp0 ((i (interval-lower-bound iv 0)))
+             (if (= i end0)
+                 knil
+                 (let lp1 ((j start1))
+                   (if (= j end1)
+                       (lp0 (+ i 1))
+                       (let ((item (f i j)))
+                         (kons item (lp1 (+ j 1))))))))))
+        (else
+         (let ((ric (make-reverse-index-cursor iv)))
+           (let lp ((reverse-index (reverse (interval-lower-bounds->list iv))))
+             (if reverse-index
+                 (let ((item (apply f (reverse reverse-index))))
+                   (kons item (lp (ric reverse-index))))
+                 knil)))))))
 
 (define (interval-for-each f iv)
   (interval-fold (lambda (acc . multi-index) (apply f multi-index)) #f iv)

@@ -26,8 +26,7 @@
    ;; Indexing
    index-rotate index-first index-last index-swap
    indexer->coeffs coeffs->indexer default-indexer default-coeffs
-   invert-default-index interval-cursor interval-cursor-next!
-   interval-cursor-next interval-cursor-get interval-fold
+   invert-default-index interval-fold make-reverse-index-cursor
    ;; Storage Classes
    make-storage-class storage-class? storage-class-getter
    storage-class-setter storage-class-checker storage-class-maker
