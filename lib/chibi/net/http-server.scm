@@ -12,6 +12,9 @@
 ;;> and a \scheme{restart} procedure to restart the servlets with a new
 ;;> request.
 ;;>
+;;> Errors constructing the request return HTTP 400 (Bad Request).
+;;> Unhandled servlet errors return HTTP 500 (Internal Server Error).
+;;>
 ;;> The default config parameters are:
 ;;>
 ;;> \itemlist[
@@ -44,11 +47,12 @@
                  (protect
                      (exn
                       (else
-                       ;; error parsing headers, can't use servlet-respond
+                       ;; error parsing request, can't use servlet-respond
                        (log-error "request error: " exn ls
                                   (sockaddr-name (address-info-address addr)))
-                       (servlet-write-status out 500 "Internal server error")
-                       (mime-write-headers `((Status . "500")) out)
+                       (servlet-write-status out 400 "Bad Request")
+                       (mime-write-headers
+                        '((Content-Length . "0") (Connection . "close")) out)
                        (display "\r\n" out)
                        #f))
                    (make-request command (car ls) (cadr ls) in out sock addr))))
