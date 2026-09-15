@@ -560,8 +560,9 @@ sexp sexp_scheduler (sexp ctx, sexp self, sexp_sint_t n, sexp root_thread) {
       sexp_global(ctx, SEXP_G_THREADS_FRONT) = sexp_cdr(front);
       if (! sexp_pairp(sexp_cdr(front)))
         sexp_global(ctx, SEXP_G_THREADS_BACK) = SEXP_NULL;
+      /* Requeue a waiting thread without discarding its existing deadline. */
       if (sexp_context_refuel(ctx) > 0 && sexp_not(sexp_memq(ctx, ctx, paused)))
-        sexp_insert_timed(ctx, ctx, SEXP_FALSE);
+        sexp_insert_timed(ctx, ctx, ctx);
       paused = sexp_global(ctx, SEXP_G_THREADS_PAUSED);
     } else {
       /* swap with front of queue */
