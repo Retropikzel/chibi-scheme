@@ -22,7 +22,8 @@
           invalid-library-reason valid-library?
           invalid-program-reason valid-program?
           repo-find-publisher lookup-digest rsa-identity=?
-          extract-rsa-private-key extract-rsa-public-key)
+          extract-rsa-private-key extract-rsa-public-key
+          parse-library-spec)
   (import (scheme base)
           (scheme char)
           (scheme file)

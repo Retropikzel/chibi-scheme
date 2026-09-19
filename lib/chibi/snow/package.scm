@@ -468,6 +468,18 @@
    (else (map (lambda (x) (or (string->number x) (string->symbol x)))
               (string-split str #\.)))))
 
+(define (parse-library-spec str)
+  (cond
+    ((pair? str) str)
+    ((equal? "" str) (error "empty library name"))
+    ((eqv? #\( (string-ref str 0))
+     (let ((spec (read-from-string str)))
+       (if (list? (car spec))
+         spec
+         `((name ,spec)))))
+    (else (map (lambda (x) (or (string->number x) (string->symbol x)))
+               `((name ,(string-split str #\.)))))))
+
 (define (check-cond-expand impl config test)
   (define (library-installed? config name)
     ;; assume it could be installed for now... this is effectively a
