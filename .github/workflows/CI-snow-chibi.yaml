@@ -9,6 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, ubuntu-26.04-arm, macos-latest, macos-26-intel]
+    steps:
       - uses: actions/checkout@v6
       - name: Build
         run: make # assumes GNUMake
