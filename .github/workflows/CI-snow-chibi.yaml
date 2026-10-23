@@ -35,7 +35,6 @@ jobs:
         run: snow-chibi upgrade "(chibi assert)"
       - name: snow-chibi remove
         run: snow-chibi remove "(chibi assert)"
-      - name: snow-chibi install
       - name: snow-chibi status 2 (removed)
         run: snow-chibi status "(chibi assert)"
         run: |
