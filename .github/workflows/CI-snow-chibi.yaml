@@ -37,6 +37,7 @@ jobs:
         run: snow-chibi remove "(chibi assert)"
       - name: snow-chibi status 2 (removed)
         run: snow-chibi status "(chibi assert)"
+      - name: snow-chibi install-dependencies
         run: |
           printf "(import (scheme base) (scheme write) (chibi assert)) (display 1)" > main1.scm
           snow-chibi install-dependencies main1.scm
