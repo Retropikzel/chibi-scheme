@@ -29,6 +29,8 @@ jobs:
         run: snow-chibi update
       - name: snow-chibi install
         run: snow-chibi install "(chibi assert)"
+      - name: snow-chibi install (with .stub)
+        run: snow-chibi install "(chibi sqlite)"
       - name: snow-chibi status 1 (installed)
         run: snow-chibi status "(chibi assert)"
       - name: snow-chibi upgrade
