@@ -1,14 +1,14 @@
-name: CI-snow-chibi
+name: snow-chibi-tests
 
 on: [push, pull_request]
 
 jobs:
-  build:
+  snow-chibi-tests-chibi:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-26.04-arm, macos-latest, macos-26-intel]
+        os: [ubuntu-26.04, ubuntu-26.04-arm, macos-latest, macos-26-intel]
     steps:
       - uses: actions/checkout@v6
       - name: Build
@@ -48,7 +48,7 @@ jobs:
           printf "(define (baz) 1)" > foo/bar.scm
           printf "(import (scheme base) (chibi test)) (test-begin \"bar\") (test 1 (baz)) (test-end \"bar\")" > foo/test.scm
           snow-chibi package --version "1.0.0" --test foo/test.scm foo/bar.sld
-          test-package foo-bar-1.0.0.tgz
+          snow-chibi test-package foo-bar-1.0.0.tgz
       - name: snow-chibi srfi-list
         run: snow-chibi srfi-list
       - name: snow-chibi implementations
