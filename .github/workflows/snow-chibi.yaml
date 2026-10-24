@@ -45,6 +45,7 @@ jobs:
           snow-chibi install-dependencies main1.scm
       - name: snow-chibi package / test-package / program
         run: |
+          set -x
           mkdir -p foo
           printf "(define-library (foo bar) (import (scheme base) (scheme write)) (export baz) (begin (include \"bar.scm\")))" > foo/bar.sld
           printf "(define (baz) (display 1234) (newline))" > foo/bar.scm
