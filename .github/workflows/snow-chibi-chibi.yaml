@@ -14,3 +14,5 @@ jobs:
         os: [ubuntu-26.04]
     steps:
       - uses: .github/workflows/snow-chibi-tests.yaml
+        with:
+          scheme: "chibi"
