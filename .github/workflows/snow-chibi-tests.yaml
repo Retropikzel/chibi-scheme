@@ -1,14 +1,9 @@
 name: snow-chibi-tests
 
-on: [push, pull_request]
+on: [workflow_call]
 
 jobs:
   snow-chibi-tests:
-    name: ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
     steps:
       - uses: actions/checkout@v6
       - name: Build
@@ -42,7 +37,7 @@ jobs:
       - name: snow-chibi install-dependencies
         run: |
           printf "(import (scheme base) (scheme write) (chibi assert)) (display 1)" > main1.scm
-          snow-chibi install-dependencies main1.scm
+          snow-chibi install-dependencies --impls=$SCHEME main1.scm
       - name: snow-chibi package / test-package / program
         run: |
           set -eu
@@ -55,7 +50,7 @@ jobs:
           printf "(import (scheme base) (scheme write) (foo bar)) (display (baz)) (newline)" > snow-chibi-test-program.scm
           snow-chibi package --version "1.0.0" --test foo/test.scm --programs snow-chibi-test-program.scm foo/bar.sld
           snow-chibi test-package foo-bar-1.0.0.tgz
-          snow-chibi install --always-yes foo-bar-1.0.0.tgz
+          snow-chibi install --impls=$SCHEME --always-yes foo-bar-1.0.0.tgz
           test_program_output=$(snow-chibi-test-program)
           if [ ! "$test_program_output" = "1234" ]; then exit 1; fi
       - name: snow-chibi srfi-list
