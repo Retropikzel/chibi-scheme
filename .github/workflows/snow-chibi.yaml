@@ -3,7 +3,7 @@ name: snow-chibi-tests
 on: [push, pull_request]
 
 jobs:
-  snow-chibi-tests-chibi:
+  snow-chibi-tests:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -43,14 +43,17 @@ jobs:
         run: |
           printf "(import (scheme base) (scheme write) (chibi assert)) (display 1)" > main1.scm
           snow-chibi install-dependencies main1.scm
-      - name: snow-chibi package / test-package
+      - name: snow-chibi package / test-package / program
         run: |
-          mkdir foo
+          mkdir -p foo
           printf "(define-library (foo bar) (import (scheme base) (scheme write)) (export baz) (begin (include \"bar.scm\")))" > foo/bar.sld
           printf "(define (baz) 1)" > foo/bar.scm
           printf "(import (scheme base) (chibi test)) (test-begin \"bar\") (test 1 (baz)) (test-end \"bar\")" > foo/test.scm
-          snow-chibi package --version "1.0.0" --test foo/test.scm foo/bar.sld
+          printf "(import (scheme base) (scheme write) (foo bar)) (display 1234) (newline)" > snow-chibi-test-program.scm
+          snow-chibi package --version "1.0.0" --test foo/test.scm --program snow-chibi-test-program foo/bar.sld
           snow-chibi test-package foo-bar-1.0.0.tgz
+          test_program_output=$(snow-chibi-test-program)
+          if [ ! "$test_program_output" = "1234" ]; then exit 1; fi
       - name: snow-chibi srfi-list
         run: snow-chibi srfi-list
       - name: snow-chibi implementations
