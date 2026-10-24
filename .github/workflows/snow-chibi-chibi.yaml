@@ -15,4 +15,4 @@ jobs:
       matrix:
         os: [ubuntu-26.04]
     steps:
-      - uses: ${{ env.REPO_OWNER }}/chibi-scheme/snow-chibi-tests@${{ env.BRANCH_NAME }}
+      - uses: Retropikzel/chibi-scheme/snow-chibi-tests@snow-chibi-github-actions-tests
