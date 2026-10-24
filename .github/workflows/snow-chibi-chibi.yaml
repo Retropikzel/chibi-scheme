@@ -4,8 +4,6 @@ on: [workflow_dispatch, push, pull_request]
 
 env:
     SCHEME: chibi
-    BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-    REPO_OWNER: ${{ github.repository_owner }}
 
 jobs:
   snow-chibi-tests-chicken:
@@ -15,4 +13,4 @@ jobs:
       matrix:
         os: [ubuntu-26.04]
     steps:
-      - uses: Retropikzel/chibi-scheme/snow-chibi-tests@snow-chibi-github-actions-tests
+      - uses: .github/workflows/snow-chibi-tests

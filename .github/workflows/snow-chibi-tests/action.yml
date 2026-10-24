@@ -1,0 +1,59 @@
+name: snow-chibi-tests
+
+on: [workflow_call]
+
+jobs:
+  snow-chibi-tests:
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build
+        run: make # assumes GNUMake
+      - name: Setup
+        run: sudo make install
+      - name: snow-chibi --help
+        run: snow-chibi --help
+      - name: snow-chibi -h
+        run: snow-chibi -h
+      - name: snow-chibi help
+        run: snow-chibi help
+      - name: snow-chibi search
+        run: snow-chibi search
+      - name: snow-chibi show
+        run: snow-chibi show "(chibi app)"
+      - name: snow-chibi update
+        run: snow-chibi update
+      - name: snow-chibi install
+        run: snow-chibi install "(chibi assert)"
+      - name: snow-chibi install (with .stub)
+        run: snow-chibi install "(chibi sqlite3)"
+      - name: snow-chibi status 1 (installed)
+        run: snow-chibi status "(chibi assert)"
+      - name: snow-chibi upgrade
+        run: snow-chibi upgrade "(chibi assert)"
+      - name: snow-chibi remove
+        run: snow-chibi remove "(chibi assert)"
+      - name: snow-chibi status 2 (removed)
+        run: snow-chibi status "(chibi assert)"
+      - name: snow-chibi install-dependencies
+        run: |
+          printf "(import (scheme base) (scheme write) (chibi assert)) (display 1)" > main1.scm
+          snow-chibi install-dependencies --impls=$SCHEME main1.scm
+      - name: snow-chibi package / test-package / program
+        run: |
+          set -eu
+          mkdir -p /home/runner/.snow
+          echo "()" > /home/runner/.snow/config.scm
+          mkdir -p foo
+          printf "(define-library (foo bar) (import (scheme base) (scheme write)) (export baz) (include \"bar.scm\"))" > foo/bar.sld
+          printf "(define (baz) 1234)" > foo/bar.scm
+          printf "(import (scheme base) (foo bar) (chibi test)) (test-begin \"foobar\") (test 1234 (baz)) (test-end \"foobar\")" > foo/test.scm
+          printf "(import (scheme base) (scheme write) (foo bar)) (display (baz)) (newline)" > snow-chibi-test-program.scm
+          snow-chibi package --version "1.0.0" --test foo/test.scm --programs snow-chibi-test-program.scm foo/bar.sld
+          snow-chibi test-package foo-bar-1.0.0.tgz
+          snow-chibi install --impls=$SCHEME --always-yes foo-bar-1.0.0.tgz
+          test_program_output=$(snow-chibi-test-program)
+          if [ ! "$test_program_output" = "1234" ]; then exit 1; fi
+      - name: snow-chibi srfi-list
+        run: snow-chibi srfi-list
+      - name: snow-chibi implementations
+        run: snow-chibi implementations
