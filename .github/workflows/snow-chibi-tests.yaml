@@ -4,6 +4,11 @@ on: [workflow_call]
 
 jobs:
   snow-chibi-tests:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-26.04]
     steps:
       - uses: actions/checkout@v6
       - name: Build
