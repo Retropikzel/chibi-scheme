@@ -46,6 +46,8 @@ jobs:
       - name: snow-chibi package / test-package / program
         run: |
           set -x
+          mkdir -p /home/runner/.snow
+          echo "()" > /home/runner/.snow/config.scm
           mkdir -p foo
           printf "(define-library (foo bar) (import (scheme base) (scheme write)) (export baz) (begin (include \"bar.scm\")))" > foo/bar.sld
           printf "(define (baz) (display 1234) (newline))" > foo/bar.scm
@@ -53,6 +55,7 @@ jobs:
           printf "(import (scheme base) (scheme write) (foo bar)) (baz)" > snow-chibi-test-program.scm
           snow-chibi package --version "1.0.0" --test foo/test.scm --programs snow-chibi-test-program.scm foo/bar.sld
           snow-chibi test-package foo-bar-1.0.0.tgz
+          snow-chibi install foo-bar-1.0.0.tgz
           test_program_output=$(snow-chibi-test-program)
           if [ ! "$test_program_output" = "1234" ]; then exit 1; fi
       - name: snow-chibi srfi-list
