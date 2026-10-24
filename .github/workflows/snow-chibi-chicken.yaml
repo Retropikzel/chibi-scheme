@@ -2,10 +2,6 @@ name: snow-chibi-tests-chicken
 
 on: [workflow_dispatch]
 
-env:
-    SCHEME: chicken
-    APT_PACKAGES: chicken-bin
-
 jobs:
   snow-chibi-tests-chicken:
     name: ${{ matrix.os }}
@@ -14,6 +10,9 @@ jobs:
       matrix:
         os: [ubuntu-26.04]
     steps:
-      - name: Install $SCHEME
-        run: sudo apt install -y $APT_PACKAGES
-      - uses: Retropikzel/chibi-scheme/snow-chibi-tests@snow-chibi-github-actions-tests
+      - name: Install chicken
+        run: sudo apt install -y chicken-bin
+      - id: Tests
+        uses: ./.github/actions/snow-chibi-tests
+        with:
+          scheme: "chicken"
