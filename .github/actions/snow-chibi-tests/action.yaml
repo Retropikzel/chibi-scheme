@@ -3,7 +3,6 @@ inputs:
   scheme:
     description: The implementation to test snow-chibi on
     required: true
-    default: "chibi"
 runs:
   using: composite
   steps:
