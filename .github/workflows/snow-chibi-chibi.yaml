@@ -13,4 +13,4 @@ jobs:
       matrix:
         os: [ubuntu-26.04]
     steps:
-      - uses: .github/workflows/snow-chibi-tests
+      - uses: .github/workflows/snow-chibi-tests.yaml
