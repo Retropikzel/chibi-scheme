@@ -50,7 +50,7 @@ jobs:
           printf "(define (baz) 1)" > foo/bar.scm
           printf "(import (scheme base) (chibi test)) (test-begin \"bar\") (test 1 (baz)) (test-end \"bar\")" > foo/test.scm
           printf "(import (scheme base) (scheme write) (foo bar)) (display 1234) (newline)" > snow-chibi-test-program.scm
-          snow-chibi package --version "1.0.0" --test foo/test.scm --program snow-chibi-test-program foo/bar.sld
+          snow-chibi package --version "1.0.0" --test foo/test.scm --programs snow-chibi-test-program foo/bar.sld
           snow-chibi test-package foo-bar-1.0.0.tgz
           test_program_output=$(snow-chibi-test-program)
           if [ ! "$test_program_output" = "1234" ]; then exit 1; fi
