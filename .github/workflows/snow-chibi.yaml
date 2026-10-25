@@ -3,6 +3,23 @@ name: snow-chibi-tests-chibi
 on: [workflow_dispatch, push, pull_request]
 
 jobs:
+  capyscheme:
+    runs-on: macos-26
+    steps:
+      - name: Install capyscheme
+        shell: bash
+        run: brew install capyscheme
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: capyscheme
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: capyscheme
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
   chibi:
     runs-on: ubuntu-26.04
     steps:
