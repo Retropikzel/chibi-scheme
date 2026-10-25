@@ -10,12 +10,12 @@ jobs:
         os: [ubuntu-26.04]
     steps:
       - uses: actions/checkout@v6
-      - id: Test with snow fort
+      - id: test-with-snow-fort
         env:
           SCHEME: chibi
           HOST: http://snow-fort.org
         uses: ./.github/actions/snow-chibi-tests
-      - id: Test with git
+      - id: test-with-git
         env:
           SCHEME: chibi
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
