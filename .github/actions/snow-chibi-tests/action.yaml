@@ -56,7 +56,7 @@ runs:
     - name: snow-chibi package / test-package / program
       shell: bash
       run: |
-        set -eu
+        set -eux
         mkdir -p /home/runner/.snow
         echo "()" > /home/runner/.snow/config.scm
         mkdir -p foo
