@@ -90,7 +90,7 @@ runs:
 
     - name: snow-chibi srfi-list
       shell: bash
-      run: snow-chibi srfi-list
+      run: snow-chibi srfi-list | grep "Could not get supported SRFI list" && exit 1
 
     - name: snow-chibi implementations
       shell: bash
