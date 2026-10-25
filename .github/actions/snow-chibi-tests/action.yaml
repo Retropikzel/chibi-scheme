@@ -83,7 +83,6 @@ runs:
         snow-chibi --verbose --host=$HOST install --impls=$SCHEME --always-yes --install-tests=1 foo-bar-1.0.0.tgz
         # Test package after install so that (srfi 64) is installed
         snow-chibi --verbose test-package foo-bar-1.0.0.tgz
-        cat /usr/local/bin/snow-chibi-test-program
         test_program_output=$(snow-chibi-test-program)
         test "$test_program_output" = "1234"
         snow-chibi --verbose git-index foo-bar-1.0.0.tgz
