@@ -144,6 +144,28 @@ jobs:
           SCHEME: racket
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+  meevax:
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Install meevax
+        shell: bash
+        run: |
+          git clone https://github.com/yamacir-kit/meevax.git --branch=release-candidate #--branch=v0.5.596
+          cd meevax
+          CC=clang cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+          make
+          sudo make install
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: meevax
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: meevax
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
   mit-scheme:
     runs-on: ubuntu-26.04
     steps:
@@ -210,7 +232,7 @@ jobs:
       - name: Install ypsilon
         shell: bash
         run: |
-          sudo apt-get install -y llvm-19 llvm-19-dev clang-19 llvm-19-dev lld-19 libffi-dev libgmp-dev
+          sudo apt-get install -y llvm-19 llvm-19-dev clang-19 llvm-19-dev lld-19 libffi-dev libgmp-dev cmake
           sudo update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-19 50
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 50
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 50
