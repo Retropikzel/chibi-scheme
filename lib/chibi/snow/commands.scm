@@ -1750,7 +1750,7 @@
                     ((cyclone) "-s")
                     ((gambit) "-:r7rs")
                     ((gauche) "-b")
-                    ((guile) "\\\n--r7rs -s!#")
+                    ((guile) "\n-s --r7rs\n!#")
                     ((kawa) (string-append "-Dkawa.import.path="
                                      (car (get-install-dirs impl cfg))
                                      "/*.sld"))
