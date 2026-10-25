@@ -2,12 +2,11 @@ name: snow-chibi-tests-chibi
 
 on: [workflow_dispatch, push, pull_request]
 
+env:
+
 jobs:
   chibi:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v6
       - id: snow-fort
@@ -21,10 +20,7 @@ jobs:
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
   chicken:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
+    runs-on: ubuntu-26.04
     steps:
       - name: Install chicken
         shell: bash
@@ -43,10 +39,7 @@ jobs:
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
   kawa:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
+    runs-on: ubuntu-26.04
     steps:
       - name: Install kawa
         shell: bash
@@ -69,10 +62,7 @@ jobs:
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
   loko:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
+    runs-on: ubuntu-26.04
     steps:
       - name: Install loko
         shell: bash
@@ -94,10 +84,7 @@ jobs:
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
   mosh:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
+    runs-on: ubuntu-26.04
     steps:
       - name: Install mosh
         shell: bash
@@ -121,10 +108,7 @@ jobs:
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
   racket:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
+    runs-on: ubuntu-26.04
     steps:
       - name: Install racket
         shell: bash
@@ -143,10 +127,7 @@ jobs:
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
   tr7:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
+    runs-on: ubuntu-26.04
     steps:
       - name: Install skint
         shell: bash
