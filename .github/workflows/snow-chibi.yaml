@@ -236,7 +236,7 @@ jobs:
           sudo update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-19 50
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 50
           sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 50
-          git clone https://github.com/fujita-y/ypsilon.git --branch=v2.0.8
+          git clone https://github.com/fujita-y/ypsilon.git
           cd ypsilon
           CC=clang CXX=clang++ cmake -DCMAKE_BUILD_TYPE=Release .
           CC=clang CXX=clang++ cmake --build .
