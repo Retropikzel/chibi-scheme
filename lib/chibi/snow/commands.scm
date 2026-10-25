@@ -1748,8 +1748,10 @@
              (arg (case impl
                     ((chicken) "-s")
                     ((cyclone) "-s")
+                    ((gambit) "-:r7rs")
                     ((gauche) "-b")
                     ((larceny) "-program")
+                    ((racket) "\n#lang r7rs\n")
                     (else #f))))
         (if (and path arg)
             (string-append path " " arg)
