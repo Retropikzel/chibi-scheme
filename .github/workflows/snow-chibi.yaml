@@ -42,69 +42,6 @@ jobs:
           SCHEME: chicken
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
-  gambit:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
-    steps:
-      - name: Install gambit
-        shell: bash
-        run: |
-          sudo apt-get install -y gambc
-      - uses: actions/checkout@v6
-      - name: snow-fort
-        env:
-          SCHEME: gambit
-          HOST: http://snow-fort.org
-        uses: ./.github/actions/snow-chibi-tests
-      - name: git
-        env:
-          SCHEME: gambit
-          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
-        uses: ./.github/actions/snow-chibi-tests
-  gauche:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
-    steps:
-      - name: Install gauche
-        shell: bash
-        run: |
-          sudo apt-get install -y gauche
-      - uses: actions/checkout@v6
-      - name: snow-fort
-        env:
-          SCHEME: gauche
-          HOST: http://snow-fort.org
-        uses: ./.github/actions/snow-chibi-tests
-      - name: git
-        env:
-          SCHEME: gauche
-          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
-        uses: ./.github/actions/snow-chibi-tests
-  guile:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-26.04]
-    steps:
-      - name: Install guile
-        shell: bash
-        run: |
-          sudo apt-get install -y guile-3.0
-      - uses: actions/checkout@v6
-      - name: snow-fort
-        env:
-          SCHEME: guile
-          HOST: http://snow-fort.org
-        uses: ./.github/actions/snow-chibi-tests
-      - name: git
-        env:
-          SCHEME: gauche
-          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
-        uses: ./.github/actions/snow-chibi-tests
   kawa:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -129,6 +66,31 @@ jobs:
       - name: git
         env:
           SCHEME: kawa
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
+  loko:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-26.04]
+    steps:
+      - name: Install loko
+        shell: bash
+        run: |
+          wget https://scheme.fail/releases/loko-0.13.0.tar.gz
+          tar -xf loko-0.13.0.tar.gz
+          cd loko-0.13.0
+          make
+          sudo make install
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: loko
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: loko
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
   racket:

@@ -2848,16 +2848,29 @@
                               path " - install anyway?"))
               prog))))))
 
+(define (loko-program-builder impl cfg prog dir)
+  (let ((path (get-program-file cfg prog)))
+    (with-directory
+     dir
+     (lambda ()
+       (let ((res (system 'loko '-feval '-std=r7rs '--compile path)))
+         (and (or (and (pair? res) (zero? (cadr res)))
+                  (yes-or-no? cfg "loko failed to build: "
+                              path " - install anyway?"))
+              prog))))))
+
 (define (lookup-program-builder builder)
   (case builder
     ((chicken) chicken-program-builder)
     ((cyclone) cyclone-program-builder)
+    ((loko) loko-program-builder)
     (else default-program-builder)))
 
 (define (program-builder-for-implementation impl cfg)
   (case impl
     ((chicken) 'chicken)
     ((cyclone) 'cyclone)
+    ((loko) 'loko)
     (else 'default)))
 
 (define (build-program impl cfg prog dir)
