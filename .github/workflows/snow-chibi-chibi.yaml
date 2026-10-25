@@ -13,5 +13,6 @@ jobs:
       matrix:
         os: [ubuntu-26.04]
     steps:
+      - uses: actions/checkout@v6
       - id: Tests
         uses: ./.github/actions/snow-chibi-tests
