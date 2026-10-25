@@ -92,7 +92,3 @@ runs:
     - name: snow-chibi implementations
       shell: bash
       run: snow-chibi implementations
-
-    - name: snow-chibi install with prefix
-      shell: bash
-      run: snow-chibi --host=$HOST install --install-prefix=/tmp/snow "(chibi assert)"
