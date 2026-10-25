@@ -1749,6 +1749,10 @@
                     ((capyscheme) "-s")
                     ((chicken) "-s")
                     ((cyclone) "-s")
+                    ((foment)
+                     (string-append "-A "
+                                    (car (get-install-dirs impl cfg))
+                                    " --load \"$0\""))
                     ((gambit) "-:r7rs")
                     ((gauche) "-b")
                     ((guile) "\n-s --r7rs\n!#")
@@ -2814,6 +2818,16 @@
     (call-with-output-file dest
       (lambda (out)
         (cond
+          ;; Hack to make foment programs work atleast somewhere
+          ;; does not work on busybox
+          ((equal? impl 'foment)
+           (newline out) ;; Empty line instead of shebang
+           (display "#|" out)
+           (newline out)
+           (display (string-append "exec " script) out)
+           (newline out)
+           (display "|#" out)
+           (newline out))
           ;; Hack to make mit-scheme programs work atleast somewhere
           ;; does not work on busybox
           ((equal? impl 'mit-scheme)

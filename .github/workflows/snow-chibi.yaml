@@ -3,26 +3,6 @@ name: snow-chibi-tests-chibi
 on: [workflow_dispatch, push, pull_request]
 
 jobs:
-  capyscheme:
-    runs-on: macos-26
-    steps:
-      - name: Install capyscheme
-        shell: bash
-        run: |
-          brew tap playX18/tap
-          brew trust playx18/tap
-          brew install capyscheme
-      - uses: actions/checkout@v6
-      - name: snow-fort
-        env:
-          SCHEME: capyscheme
-          HOST: http://snow-fort.org
-        uses: ./.github/actions/snow-chibi-tests
-      - name: git
-        env:
-          SCHEME: capyscheme
-          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
-        uses: ./.github/actions/snow-chibi-tests
   chibi:
     runs-on: ubuntu-26.04
     steps:
@@ -54,6 +34,65 @@ jobs:
       - name: git
         env:
           SCHEME: chicken
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
+  cyclone:
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Install cyclone
+        shell: bash
+        run: |
+          git clone https://github.com/justinethier/cyclone-bootstrap.git --branch=v0.36.0
+          cd cyclone-bootstrap
+          make
+          sudo make install
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: cyclone
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: cyclone
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
+  foment:
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Install foment
+        shell: bash
+        run: |
+          git clone https://github.com/leftmike/foment.git
+          cd foment
+          make
+          sudo make install
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: foment
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: foment
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
+  gauche:
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Install gauche
+        shell: bash
+        run: sudo apt-get install -y gauche
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: gauche
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: gauche
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
   kawa:
