@@ -116,6 +116,7 @@ jobs:
         run: |
           git clone https://gitlab.com/kashell/Kawa.git
           cd Kawa
+          bash autogen.sh
           ./configure --prefix=/usr/local
           make
           sudo make install
