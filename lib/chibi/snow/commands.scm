@@ -2811,9 +2811,9 @@
     (call-with-output-file dest
       (lambda (out)
         (when script
-          (display "#! " out)
+          (display "#!" out)
           (display script out)
-          (newline out)) 
+          (newline out))
         (for-each
          (lambda (line) (display line out) (newline out))
          (if (and (pair? src-lines) (string-prefix? "#!" (car src-lines)))
