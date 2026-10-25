@@ -94,4 +94,4 @@ runs:
 
     - name: snow-chibi implementations
       shell: bash
-      run: snow-chibi implementations
+      run: snow-chibi implementations | grep "$SCHEME" || exit 1
