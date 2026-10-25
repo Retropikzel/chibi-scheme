@@ -32,12 +32,12 @@ jobs:
           sudo apt install -y chicken-bin
           sudo chicken-install r7rs
       - uses: actions/checkout@v6
-      - id: snow-fort
+      - name: snow-fort
         env:
           SCHEME: chicken
           HOST: http://snow-fort.org
         uses: ./.github/actions/snow-chibi-tests
-      - id: git
+      - name: git
         env:
           SCHEME: chicken
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
