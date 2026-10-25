@@ -42,6 +42,7 @@ jobs:
       - name: Install cyclone
         shell: bash
         run: |
+          sudo apt-get install -y libck-dev
           wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v0.36.0.tar.gz
           tar -xf v0.36.0.tar.gz
           cd cyclone-bootstrap-0.36.0

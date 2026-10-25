@@ -1606,14 +1606,17 @@
                           "/lib/snow"))))
     ((gauche)
      (list
-      (let ((dir-old (string-trim
+      (let ((dir (string-trim
                   (process->string '(gauche-config "--sitelibdir"))
                   char-whitespace?))
-            (dir (process->string '(gosh -e "(begin (import (gauche config)) (print (gauche-config \"--sitelibdir\")) (exit))")))
-            )
-        (or (and (string? dir) (> (string-length dir) 0)
+            (version (process->string gosh -e "(begin (print (gauche-version)) (exit))")))
+        (or
+          (and (string? dir) (> (string-length dir) 0)
                  (eqv? #\/ (string-ref dir 0))
-                 dir)
+                 )
+          (and (string? version) (> (string-length version) 0)
+               (eqv? #\/ (string-ref version 0))
+               (string-append "/usr/local/share/gauche-0.98/" version "/lib"))
             "/usr/local/share/gauche-0.98/site/lib"))))
     ((guile)
      (let ((path
