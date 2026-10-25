@@ -249,7 +249,7 @@ jobs:
         shell: bash
         run: |
           VERSION=0.9.15
-          wget -O sagittarius.tar.gz https://github.com/ktakashi/sagittarius-scheme/releases/download/v${VERSION}/sagittarius-${VERSION}.tar.gz
+          wget https://github.com/ktakashi/sagittarius-scheme/releases/download/v${VERSION}/sagittarius-${VERSION}.tar.gz
           tar -xf sagittarius-${VERSION}.tar.gz
           cd sagittarius-${VERSION}
           cmake .
