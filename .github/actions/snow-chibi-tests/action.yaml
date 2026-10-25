@@ -6,6 +6,7 @@ inputs:
 runs:
   using: composite
   steps:
+    - uses: actions/checkout@v6
     - name: Build
       shell: bash
       run: make # assumes GNUMake

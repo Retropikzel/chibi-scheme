@@ -6,13 +6,12 @@ env:
     SCHEME: chibi
 
 jobs:
-  snow-chibi-tests-chicken:
+  snow-chibi-tests-chibi:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-26.04]
     steps:
-      - uses: actions/checkout@v6
       - id: Tests
         uses: ./.github/actions/snow-chibi-tests

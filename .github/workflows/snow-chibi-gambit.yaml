@@ -13,7 +13,6 @@ jobs:
       matrix:
         os: [ubuntu-26.04]
     steps:
-      - uses: actions/checkout@v6
       - name: Install gambit
         run: |
           sudo apt install -y gambc

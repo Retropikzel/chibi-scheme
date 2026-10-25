@@ -6,14 +6,13 @@ env:
     SCHEME: guile
 
 jobs:
-  snow-chibi-tests-chicken:
+  snow-chibi-tests-guile:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-26.04]
     steps:
-      - uses: actions/checkout@v6
       - name: Install guile
         run: |
           sudo apt install -y guile-3.0
