@@ -1,0 +1,44 @@
+name: snow-chibi-tests-chibi
+
+on: [workflow_dispatch, push, pull_request]
+
+jobs:
+  chibi:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-26.04]
+    steps:
+      - uses: actions/checkout@v6
+      - id: snow-fort
+        env:
+          SCHEME: chibi
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - id: git
+        env:
+          SCHEME: chibi
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
+  chicken:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-26.04]
+    steps:
+      - name: Install chicken
+        shell: bash
+        run: |
+          sudo apt install -y chicken-bin
+          sudo chicken-install r7rs
+      - uses: actions/checkout@v6
+      - id: snow-fort
+        env:
+          SCHEME: chicken
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - id: git
+        env:
+          SCHEME: chicken
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests

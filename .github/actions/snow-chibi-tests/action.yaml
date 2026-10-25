@@ -6,6 +6,10 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Install apt packages
+      shell: bash
+      run: sudo apt install -y time
+
     - name: Build
       shell: bash
       run: make # assumes GNUMake
@@ -28,7 +32,7 @@ runs:
 
     - name: snow-chibi search
       shell: bash
-      run: snow-chibi --host=$HOST search
+      run: time snow-chibi --host=$HOST search
 
     - name: snow-chibi show
       shell: bash
@@ -36,15 +40,15 @@ runs:
 
     - name: snow-chibi update
       shell: bash
-      run: snow-chibi --host=$HOST update
+      run: time snow-chibi --host=$HOST update
 
     - name: snow-chibi install
       shell: bash
-      run: snow-chibi --host=$HOST install "(chibi assert)"
+      run: time snow-chibi --host=$HOST install "(chibi assert)"
 
     - name: snow-chibi install (with .stub)
       shell: bash
-      run: snow-chibi --host=$HOST install "(chibi sqlite3)"
+      run: time snow-chibi --host=$HOST install "(chibi sqlite3)"
 
     - name: snow-chibi status 1 (installed)
       shell: bash
@@ -66,9 +70,9 @@ runs:
       shell: bash
       run: |
         printf "(import (scheme base) (scheme write) (chibi assert)) (display 1)" > main1.scm
-        snow-chibi --host=$HOST install-dependencies --impls=$SCHEME main1.scm
+        time snow-chibi --host=$HOST install-dependencies --impls=$SCHEME main1.scm
 
-    - name: snow-chibi package / test-package / program
+    - name: snow-chibi package / test-package / program / git-index
       shell: bash
       run: |
         set -eux
@@ -83,7 +87,9 @@ runs:
         snow-chibi test-package foo-bar-1.0.0.tgz
         snow-chibi --host=$HOST install --impls=$SCHEME --always-yes --install-tests?=1 foo-bar-1.0.0.tgz
         test_program_output=$(snow-chibi-test-program)
-        if [ ! "$test_program_output" = "1234" ]; then exit 1; fi
+        test "$test_program_output" = "1234"
+        snow-chibi git-index foo-bar-1.0.0.tgz
+        test -f .snow-repo.scm
 
     - name: snow-chibi srfi-list
       shell: bash
