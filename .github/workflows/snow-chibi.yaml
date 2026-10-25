@@ -210,6 +210,10 @@ jobs:
       - name: Install ypsilon
         shell: bash
         run: |
+          sudo apt-get install -y  llvm-19 llvm-19-dev clang-19 llvm-19-dev lld-19
+          update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-19 50
+          update-alternatives --install /usr/bin/clang clang /usr/bin/clang-19 50
+          update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-19 50
           git clone https://github.com/fujita-y/ypsilon.git --branch=v2.0.8
           cd ypsilon
           CC=clang CXX=clang++ cmake -DCMAKE_BUILD_TYPE=Release .
