@@ -1,4 +1,4 @@
-name: snow-chibi-tests-chibi
+name: snow-chibi
 
 on: [workflow_dispatch, push, pull_request]
 
@@ -37,14 +37,17 @@ jobs:
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
   cyclone:
-    runs-on: macos-26
+    runs-on: ubuntu-24.04
     steps:
       - name: Install cyclone
         shell: bash
         run: |
-          brew tap cyclone-scheme/cyclone
-          brew trust cyclone-scheme/cyclone
-          brew install cyclone-scheme/cyclone/cyclone-bootstrap
+          sudo apt-get install -y libtommath-dev libck-dev
+          wget -O cyclone-bootstrap.tar.gz https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v0.36.0.tar.gz
+          mkdir cyclone && tar -C cyclone --strip-components 1 -xf cyclone-bootstrap.tar.gz
+          cd cyclone
+          make
+          sudo make install
       - uses: actions/checkout@v6
       - name: snow-fort
         env:
