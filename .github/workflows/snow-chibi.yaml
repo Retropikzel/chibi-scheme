@@ -102,6 +102,7 @@ jobs:
       - name: Install mosh
         shell: bash
         run: |
+          sudo apt-get install -y libonig-dev
           wget https://github.com/higepon/mosh/releases/download/mosh-0.2.9-rc1/mosh-0.2.9-rc1.tar.gz
           tar -xf mosh-0.2.9-rc1.tar.gz
           cd mosh-0.2.9-rc1
