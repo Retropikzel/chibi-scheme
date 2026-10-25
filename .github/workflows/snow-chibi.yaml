@@ -93,6 +93,32 @@ jobs:
           SCHEME: loko
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+  mosh:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-26.04]
+    steps:
+      - name: Install mosh
+        shell: bash
+        run: |
+          wget https://github.com/higepon/mosh/releases/download/mosh-0.2.9-rc1/mosh-0.2.9-rc1.tar.gz
+          tar -xf mosh-0.2.9-rc1.tar.gz
+          cd mosh-0.2.9-rc1
+          ./configure --prefix=/usr/local
+          make
+          sudo make install
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: mosh
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: mosh
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
   racket:
     runs-on: ${{ matrix.os }}
     strategy:
