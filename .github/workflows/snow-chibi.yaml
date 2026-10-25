@@ -115,8 +115,10 @@ jobs:
         shell: bash
         run: |
           git clone https://gitlab.com/kashell/Kawa.git
-          make -C Kawa
-          sudo make -C Kawa install
+          cd Kawa
+          ./configure --prefix=/usr/local
+          make
+          sudo make install
       - uses: actions/checkout@v6
       - name: snow-fort
         env:
