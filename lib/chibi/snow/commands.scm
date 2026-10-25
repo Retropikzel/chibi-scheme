@@ -1751,6 +1751,9 @@
                     ((gambit) "-:r7rs")
                     ((gauche) "-b")
                     ((guile) "\\\n--r7rs -s!#")
+                    ((kawa) (string-append "-Dkawa.import.path="
+                                     (car (get-install-dirs impl cfg))
+                                     "/*.sld"))
                     ((larceny) "-program")
                     ((racket) "\n#lang r7rs\n")
                     (else #f))))

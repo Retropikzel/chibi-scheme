@@ -105,6 +105,29 @@ jobs:
           SCHEME: gauche
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+  kawa:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-26.04]
+    steps:
+      - name: Install kawa
+        shell: bash
+        run: |
+          git clone https://gitlab.com/kashell/Kawa.git
+          make -C Kawa
+          sudo make -C Kawa install
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: kawa
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: kawa
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
   racket:
     runs-on: ${{ matrix.os }}
     strategy:
