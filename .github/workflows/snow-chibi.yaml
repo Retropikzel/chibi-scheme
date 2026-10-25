@@ -184,3 +184,25 @@ jobs:
           SCHEME: tr7
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+  ypsilon:
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Install ypsilon
+        shell: bash
+        run: |
+          git clone https://github.com/fujita-y/ypsilon.git --branch=v2.0.8
+          cd ypsilon
+          CC=clang CXX=clang++ cmake -DCMAKE_BUILD_TYPE=Release .
+          CC=clang CXX=clang++ cmake --build .
+          sudo CC=clang CXX=clang++ cmake --install .
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: ypsilon
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: ypsilon
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
