@@ -8,7 +8,9 @@ jobs:
     steps:
       - name: Install capyscheme
         shell: bash
-        run: brew install capyscheme
+        run: |
+          brew tap playX18/tap
+          brew install capyscheme
       - uses: actions/checkout@v6
       - name: snow-fort
         env:
