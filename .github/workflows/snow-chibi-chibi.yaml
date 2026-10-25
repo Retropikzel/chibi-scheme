@@ -2,9 +2,6 @@ name: snow-chibi-tests-chibi
 
 on: [workflow_dispatch, push, pull_request]
 
-env:
-    SCHEME: chibi
-
 jobs:
   snow-chibi-tests-chicken:
     name: ${{ matrix.os }}
@@ -17,4 +14,4 @@ jobs:
       - id: Tests
         uses: ./.github/actions/snow-chibi-tests
         with:
-          scheme: "chibi"
+          SCHEME: "chibi"

@@ -16,4 +16,4 @@ jobs:
       - id: Tests
         uses: ./.github/actions/snow-chibi-tests
         with:
-          scheme: "chicken"
+          SCHEME: "chicken"
