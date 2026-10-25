@@ -29,7 +29,7 @@ jobs:
       - name: Install chicken
         shell: bash
         run: |
-          sudo apt install -y chicken-bin
+          sudo apt-get install -y chicken-bin
           sudo chicken-install r7rs
       - uses: actions/checkout@v6
       - name: snow-fort
@@ -40,5 +40,26 @@ jobs:
       - name: git
         env:
           SCHEME: chicken
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
+  gauche:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-26.04]
+    steps:
+      - name: Install gauche
+        shell: bash
+        run: |
+          sudo apt-get install -y gauche
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: gauche
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: gauche
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
