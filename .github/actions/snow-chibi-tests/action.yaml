@@ -84,7 +84,7 @@ runs:
         snow-chibi --verbose package --version "1.0.0" --test foo/test.scm --programs snow-chibi-test-program.scm foo/bar.sld
         snow-chibi install --impls=$SCHEME --always-yes "(srfi 64)"
         snow-chibi --verbose --host=$HOST install --impls=$SCHEME --always-yes foo-bar-1.0.0.tgz
-        snow-chibi --verbose test-package foo-bar-1.0.0.tgz
+        snow-chibi --verbose test-package --impls=$SCHEME foo-bar-1.0.0.tgz
         test_program_output=$(snow-chibi-test-program)
         test "$test_program_output" = "1234"
         snow-chibi --verbose git-index foo-bar-1.0.0.tgz
