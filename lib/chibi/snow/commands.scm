@@ -1609,7 +1609,7 @@
       (let ((dir (string-trim
                   (process->string '(gauche-config "--sitelibdir"))
                   char-whitespace?))
-            (version (process->string gosh -e "(begin (print (gauche-version)) (exit))")))
+            (version (process->string '(gosh -e "(begin (print (gauche-version)) (exit))"))))
         (or
           (and (string? dir) (> (string-length dir) 0)
                  (eqv? #\/ (string-ref dir 0))
