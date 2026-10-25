@@ -80,8 +80,9 @@ runs:
         printf "(import (scheme base) (foo bar) (srfi 64)) (test-begin \"foobar\") (test-equal 1234 (baz)) (test-end \"foobar\")" > foo/test.scm
         printf "(import (scheme base) (scheme write) (foo bar)) (display (baz)) (newline)" > snow-chibi-test-program.scm
         snow-chibi --verbose package --version "1.0.0" --test foo/test.scm --programs snow-chibi-test-program.scm foo/bar.sld
+        snow-chibi --verbose --host=$HOST install --impls=$SCHEME --always-yes --install-tests=1 foo-bar-1.0.0.tgz
+        # Test package after install so that (srfi 64) is installed
         snow-chibi --verbose test-package foo-bar-1.0.0.tgz
-        snow-chibi --verbose --host=$HOST install --impls=$SCHEME --always-yes --install-tests?=1 foo-bar-1.0.0.tgz
         cat /usr/local/bin/snow-chibi-test-program
         test_program_output=$(snow-chibi-test-program)
         test "$test_program_output" = "1234"
