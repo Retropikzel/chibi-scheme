@@ -72,7 +72,7 @@ jobs:
       - name: Install gauche
         shell: bash
         run: |
-          sudo apt-get install -y gambc
+          sudo apt-get install -y gauche
       - uses: actions/checkout@v6
       - name: snow-fort
         env:
