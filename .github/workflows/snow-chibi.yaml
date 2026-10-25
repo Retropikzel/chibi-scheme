@@ -155,7 +155,7 @@ jobs:
           wget https://github.com/ktakashi/sagittarius-scheme/releases/download/v0.9.15/sagittarius-0.9.15.tar.gz
           tar -xf sagittarius-0.9.15.tar.gz
           cd sagittarius-0.9.15
-          ./configure --prefix=/usr/local
+          cmake .
           make
           sudo make install
       - uses: actions/checkout@v6
