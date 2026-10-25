@@ -77,10 +77,10 @@ runs:
         mkdir -p foo
         printf "(define-library (foo bar) (import (scheme base) (scheme write)) (export baz) (include \"bar.scm\"))" > foo/bar.sld
         printf "(define (baz) 1234)" > foo/bar.scm
-        printf "(import (scheme base) (foo bar) (srfi 64)) (test-begin \"foobar\") (test-equal 1234 (baz)) (test-end \"foobar\")" > foo/test.scm
+        printf "(import (scheme base) (foo bar) (srfi 64)) (test \"foobar\") (test-equal 1234 (baz)) (test-end \"foobar\")" > foo/test.scm
         printf "(import (scheme base) (scheme write) (foo bar)) (display (baz)) (newline)" > snow-chibi-test-program.scm
         snow-chibi --verbose package --version "1.0.0" --test foo/test.scm --programs snow-chibi-test-program.scm foo/bar.sld
-        snow-chibi install --impls=$SCHEME "(srfi 64)"
+        snow-chibi install --impls=$SCHEME "(chibi test)"
         snow-chibi --verbose --host=$HOST install --impls=$SCHEME --always-yes foo-bar-1.0.0.tgz
         snow-chibi --verbose test-package foo-bar-1.0.0.tgz
         test_program_output=$(snow-chibi-test-program)
