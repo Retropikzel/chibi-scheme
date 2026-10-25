@@ -1608,11 +1608,12 @@
      (list
       (let ((dir (string-trim
                   (process->string '(gauche-config "--sitelibdir"))
-                  char-whitespace?)))
+                  char-whitespace?))
+            (version (process->string gosh -e "(begin (print (gauche-version)) (exit))")))
         (or (and (string? dir) (> (string-length dir) 0)
                  (eqv? #\/ (string-ref dir 0))
                  dir)
-            "/usr/local/share/gauche/"))))
+            "/usr/local/share/gauche-0.98/site/lib"))))
     ((guile)
      (let ((path
              (guard (exn (else #f))
