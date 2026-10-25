@@ -1,0 +1,21 @@
+name: snow-chibi-tests-guile
+
+on: [workflow_dispatch, push, pull_request]
+
+env:
+    SCHEME: guile
+
+jobs:
+  snow-chibi-tests-chicken:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-26.04]
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install guile
+        run: |
+          sudo apt install -y guile-3.0
+      - id: Tests
+        uses: ./.github/actions/snow-chibi-tests

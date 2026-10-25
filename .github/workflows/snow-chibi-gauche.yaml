@@ -1,0 +1,21 @@
+name: snow-chibi-tests-gauche
+
+on: [workflow_dispatch, push, pull_request]
+
+env:
+    SCHEME: gauche
+
+jobs:
+  snow-chibi-tests-chicken:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-26.04]
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install gauche
+        run: |
+          sudo apt install -y gauche
+      - id: Tests
+        uses: ./.github/actions/snow-chibi-tests
