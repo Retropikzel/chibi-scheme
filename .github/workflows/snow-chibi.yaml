@@ -93,7 +93,7 @@ jobs:
       - name: Install guile
         shell: bash
         run: |
-          sudo apt-get install -y guile
+          sudo apt-get install -y guile-3.0
       - uses: actions/checkout@v6
       - name: snow-fort
         env:
