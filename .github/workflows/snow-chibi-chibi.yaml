@@ -14,5 +14,5 @@ jobs:
       - id: Tests
         env:
           SCHEME: chibi
-          HOST: snow-fort.org
+          HOST: http://snow-fort.org
         uses: ./.github/actions/snow-chibi-tests
