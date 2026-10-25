@@ -142,3 +142,30 @@ jobs:
           SCHEME: racket
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+  sagittarius:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-26.04]
+    steps:
+      - name: Install sagittarius
+        shell: bash
+        run: |
+          sudo apt-get install -y libgc-dev zlib1g-dev libffi-dev libssl-dev libpam0g-dev
+          wget https://github.com/ktakashi/sagittarius-scheme/releases/download/v0.9.15/sagittarius-0.9.15.tar.gz
+          tar -xf sagittarius-0.9.15.tar.gz
+          cd sagittarius-0.9.15
+          ./configure --prefix=/usr/local
+          make
+          sudo make install
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: sagittarius
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: sagittarius
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
