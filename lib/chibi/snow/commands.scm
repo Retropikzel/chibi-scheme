@@ -2822,8 +2822,7 @@
            (display (string-append "exec " script) out)
            (newline out)
            (display "|#" out)
-           (newline out)
-           )
+           (newline out))
           (script
             (display "#!" out)
             (display script out)

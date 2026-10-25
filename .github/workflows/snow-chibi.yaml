@@ -153,6 +153,7 @@ jobs:
           git clone https://github.com/yamacir-kit/meevax.git --branch=v0.5.596
           cd meevax
           CC=gcc cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
+          cd build
           make
           sudo make install
       - uses: actions/checkout@v6
