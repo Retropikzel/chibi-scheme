@@ -17,6 +17,6 @@ jobs:
       - name: Install chicken
         run: |
           sudo apt install -y chicken-bin
-          chicken-install r7rs
+          sudo chicken-install r7rs
       - id: Tests
         uses: ./.github/actions/snow-chibi-tests
