@@ -2,6 +2,9 @@ name: snow-chibi-tests-chicken
 
 on: [workflow_dispatch, push, pull_request]
 
+env:
+    SCHEME: chicken
+
 jobs:
   snow-chibi-tests-chicken:
     name: ${{ matrix.os }}
@@ -15,5 +18,3 @@ jobs:
         run: sudo apt install -y chicken-bin
       - id: Tests
         uses: ./.github/actions/snow-chibi-tests
-        with:
-          SCHEME: "chicken"
