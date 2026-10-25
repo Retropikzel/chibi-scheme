@@ -150,7 +150,7 @@ jobs:
       - name: Install meevax
         shell: bash
         run: |
-          git clone https://github.com/yamacir-kit/meevax.git --branch=v0.5.596
+          git clone https://github.com/yamacir-kit/meevax.git --branch=release-candidate #--branch=v0.5.596
           cd meevax
           CC=gcc cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local
           cd build

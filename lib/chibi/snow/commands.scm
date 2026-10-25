@@ -1746,6 +1746,7 @@
                          (else "scheme-script")))
              (path (or (find-in-path prog) prog))
              (arg (case impl
+                    ((capyscheme) "-s")
                     ((chicken) "-s")
                     ((cyclone) "-s")
                     ((gambit) "-:r7rs")
