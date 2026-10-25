@@ -1750,6 +1750,7 @@
                     ((cyclone) "-s")
                     ((gambit) "-:r7rs")
                     ((gauche) "-b")
+                    ((guile) "--r7rs\n!#")
                     ((larceny) "-program")
                     ((racket) "\n#lang r7rs\n")
                     (else #f))))
