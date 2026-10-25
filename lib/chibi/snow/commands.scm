@@ -2726,9 +2726,7 @@
     (with-directory
      dir
      (lambda ()
-       (and (guard (condition (else #f))
-              (system 'guild 'compile '-O0 '--r7rs '-o dest-library-file src-library-file))
-              library)))))
+       (and (system 'guild 'compile '-O0 '--r7rs '-o dest-library-file src-library-file) library)))))
 
 (define (kawa-builder impl cfg library dir)
   (let* ((src-library-file (make-path dir (get-library-file cfg library)))
