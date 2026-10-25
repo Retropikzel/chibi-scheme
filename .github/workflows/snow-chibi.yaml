@@ -37,17 +37,14 @@ jobs:
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
   cyclone:
-    runs-on: ubuntu-26.04
+    runs-on: macos-26
     steps:
       - name: Install cyclone
         shell: bash
         run: |
-          sudo apt-get install -y libck-dev
-          wget https://github.com/justinethier/cyclone-bootstrap/archive/refs/tags/v0.36.0.tar.gz
-          tar -xf v0.36.0.tar.gz
-          cd cyclone-bootstrap-0.36.0
-          make
-          sudo make install
+          brew tap cyclone-scheme/cyclone
+          brew trust cyclone-scheme/cyclone
+          brew install cyclone-scheme/cyclone/cyclone-bootstrap
       - uses: actions/checkout@v6
       - name: snow-fort
         env:
