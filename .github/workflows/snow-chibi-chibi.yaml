@@ -4,15 +4,19 @@ on: [workflow_dispatch, push, pull_request]
 
 jobs:
   snow-chibi-tests-chibi:
-    name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-26.04]
     steps:
       - uses: actions/checkout@v6
-      - id: Tests
+      - id: Test with snow-fort.org
         env:
           SCHEME: chibi
           HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - id: Test with git repositories
+        env:
+          SCHEME: chibi
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
