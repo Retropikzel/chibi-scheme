@@ -2,8 +2,6 @@ name: snow-chibi-tests-chibi
 
 on: [workflow_dispatch, push, pull_request]
 
-env:
-
 jobs:
   chibi:
     runs-on: ubuntu-26.04
