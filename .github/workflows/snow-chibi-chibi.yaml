@@ -2,9 +2,6 @@ name: snow-chibi-tests-chibi
 
 on: [workflow_dispatch, push, pull_request]
 
-env:
-    SCHEME: chibi
-
 jobs:
   snow-chibi-tests-chibi:
     name: ${{ matrix.os }}
@@ -15,4 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - id: Tests
+        env:
+          SCHEME: chibi
+          HOST: snow-fort.org
         uses: ./.github/actions/snow-chibi-tests
