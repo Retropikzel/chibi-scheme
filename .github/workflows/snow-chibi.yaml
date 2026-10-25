@@ -10,6 +10,7 @@ jobs:
         shell: bash
         run: |
           brew tap playX18/tap
+          brew trust playx18/tap
           brew install capyscheme
       - uses: actions/checkout@v6
       - name: snow-fort
