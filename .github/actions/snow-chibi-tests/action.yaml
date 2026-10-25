@@ -14,6 +14,10 @@ runs:
       shell: bash
       run: sudo make install
 
+    - name: Create cofnig file
+      shell: bash
+      run: mkdir -p ~/.snow && echo "()" > ~/.snow/config.scm
+
     - name: snow-chibi --help
       shell: bash
       run: snow-chibi --help
@@ -90,7 +94,7 @@ runs:
 
     - name: snow-chibi srfi-list
       shell: bash
-      run: snow-chibi srfi-list | grep "Could not get supported SRFI list" && exit 1
+      run: snow-chibi srfi-list --impls=$SCHEME | grep "Could not get supported SRFI list" && exit 1
 
     - name: snow-chibi implementations
       shell: bash

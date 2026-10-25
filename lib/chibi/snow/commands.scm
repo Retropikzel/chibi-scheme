@@ -1751,9 +1751,12 @@
                     ((gambit) "-:r7rs")
                     ((gauche) "-b")
                     ((guile) "\n-s --r7rs\n!#")
-                    ((kawa) (string-append "-Dkawa.import.path="
-                                     (car (get-install-dirs impl cfg))
-                                     "/*.sld"))
+                    ((kawa)
+                     (string-append "-Dkawa.import.path="
+                                    (car (get-install-dirs impl cfg))
+                                    "/*.sld"))
+                    ((mit-scheme)
+                     (string-append "--quiet --load \"$0\" --eval '(exit 0)'"))
                     ((larceny) "-program")
                     ((racket) "\n#lang r7rs\n")
                     (else #f))))
@@ -2809,10 +2812,22 @@
         (system "cp" path (string-append path ".bak")))
     (call-with-output-file dest
       (lambda (out)
-        (when script
-          (display "#!" out)
-          (display script out)
-          (newline out))
+        (cond
+          ;; Hack to make mit-scheme programs work atleast somewhere
+          ;; does not work on busybox
+          ((equal? impl 'mit-scheme)
+           (newline out) ;; Empty line instead of shebang
+           (display "#|" out)
+           (newline out)
+           (display (string-append "exec " script) out)
+           (newline out)
+           (display "|#" out)
+           (newline out)
+           )
+          (script
+            (display "#!" out)
+            (display script out)
+            (newline out)))
         (for-each
          (lambda (line) (display line out) (newline out))
          (if (and (pair? src-lines) (string-prefix? "#!" (car src-lines)))
