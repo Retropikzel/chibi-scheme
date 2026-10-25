@@ -36,6 +36,23 @@ jobs:
           SCHEME: chicken
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+  guile:
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Install guile
+        shell: bash
+        run: sudo apt-get install guile-3.0
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: guile
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: guile
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
   kawa:
     runs-on: ubuntu-26.04
     steps:
