@@ -248,6 +248,7 @@ jobs:
       - name: Install sagittarius
         shell: bash
         run: |
+          sudo apt-get install -y libffi-dev libgc-dev libssl-dev libz-dev
           VERSION=0.9.15
           wget https://github.com/ktakashi/sagittarius-scheme/releases/download/v${VERSION}/sagittarius-${VERSION}.tar.gz
           tar -xf sagittarius-${VERSION}.tar.gz
