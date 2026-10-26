@@ -255,7 +255,7 @@ jobs:
           cd sagittarius-${VERSION}
           cmake .
           make
-          make install
+          sudo make install
       - uses: actions/checkout@v6
       - name: snow-fort
         env:
