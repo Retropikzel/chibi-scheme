@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     push:
       branches:
-        - 'snow-chibi*'
+        - snow-chibi*
     pull_request:
       branches:
-        - 'snow-chibi*'
+        - snow-chibi*
 
 jobs:
   chibi:
