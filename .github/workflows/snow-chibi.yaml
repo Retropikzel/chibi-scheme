@@ -2,12 +2,12 @@ name: snow-chibi
 
 on:
   workflow_dispatch:
-    push:
-      branches:
-        - snow-chibi*
-    pull_request:
-      branches:
-        - snow-chibi*
+  push:
+    branches:
+      - snow-chibi*
+  pull_request:
+    branches:
+      - snow-chibi*
 
 jobs:
   chibi:
