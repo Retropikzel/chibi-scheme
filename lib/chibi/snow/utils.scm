@@ -35,7 +35,7 @@
                 '(gsi -e "(display (features))"))))
     (generic "generic" #f #f
             ,(delay (write-string "generic\n")))
-    (gauche "gosh" (gosh -e "(begin (print (gauche-version)) (exit)") "0.9.4"
+    (gauche "gosh" (gosh -e "(begin (import (gauche base)) (print (gauche-version)) (exit))") "0.9.4"
             ,(delay
                (process->sexp
                 '(gosh -uscheme.base -e "(write (features))"))))
@@ -218,7 +218,7 @@
 (define (version-split str)
   (if str
       (map (lambda (x) (or (string->number x) x))
-        (string-split str (string->char-set "._")))
+        (string-split str (string->char-set "._-")))
       '()))
 
 (define (version-compare a b)
