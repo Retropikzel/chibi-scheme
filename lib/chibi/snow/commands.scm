@@ -1610,7 +1610,8 @@
                    (process->string
                    '(gosh -e "(begin (import (gauche base) (gauche config)) (print (gauche-config \"--sitelibdir\")) (exit))"))
                    char-whitespace?))
-            (version (process->string '(gosh -e "(begin (print (gauche-version)) (exit))"))))
+            (version (process->string
+                       '(gosh -e "(begin (import (gauche base)) (print (gauche-version)) (exit))"))))
         (or
           (and (string? dir)
                (> (string-length dir) 0)
