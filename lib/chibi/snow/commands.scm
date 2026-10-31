@@ -16,10 +16,8 @@
                 (let ((msg
                        (string-append
                         "Implementation " (symbol->string (car spec))
-                        (if (string? version)
-                            (string-append " is an unsupported version, "
-                                           version)
-                            " is an unknown version")
+                        " is an unsupported version, "
+                        (x->string version)
                         ", but at least " (fourth spec) " is required.")))
                   (cond
                    (confirm?
@@ -1819,7 +1817,7 @@
              `(gosh -A ,install-dir ,file)))
         ((guile)
          (if lib-path
-             `(guile --r7rs -C ,lib-path ,file)
+             `(guile --r7rs -C ,lib-path -L ,lib-path ,file)
              `(guile --r7rs ,file)))
         ((kawa)
          (let ((install-dir (path-resolve install-dir (current-directory))))
@@ -1927,11 +1925,12 @@
         (for-each
          (lambda (file)
            (let* ((src (make-path dir (if (pair? file) (cadr file) file)))
-                  (dest0 (if (pair? file) (third file) file))
+                  (dest0 (guile-srfi-fix (if (pair? file) (third file) file)))
                   (dest (make-path test-install-dir
+                                   (guile-srfi-fix
                                    (if (path-absolute? dest0)
                                        (path-relative-to dest0 true-install-dir)
-                                       dest0))))
+                                       dest0)))))
              (create-directory* (path-directory dest))
              (install-file cfg src dest)))
          (package-data-files pkg))
@@ -2738,7 +2737,7 @@
          (src-library-file (make-path dir library-file))
          (library-dir (path-directory src-library-file))
          (dest-library-file
-           (string-append (library->path cfg library) ".go"))
+           (guile-srfi-fix (string-append (library->path cfg library) ".go")))
          (dest-dir
            (path-directory (make-path dir dest-library-file))))
     ;; ensure the build directory exists
