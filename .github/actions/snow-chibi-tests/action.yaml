@@ -12,7 +12,7 @@ runs:
 
     - name: Setup
       shell: bash
-      run: sudo make install
+      run: sudo make install || make install
 
     - name: Create config file
       shell: bash
