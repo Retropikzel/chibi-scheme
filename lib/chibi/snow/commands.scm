@@ -1758,7 +1758,7 @@
                                     " --load \"$0\""))
                     ((gambit) "-:r7rs")
                     ((gauche) "-b")
-                    ((guile) "\n-s --r7rs\n!#")
+                    ((guile) "--r7rs\n!#")
                     ((kawa)
                      (string-append "-Dkawa.import.path="
                                     (car (get-install-dirs impl cfg))
