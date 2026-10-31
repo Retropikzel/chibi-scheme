@@ -2737,7 +2737,7 @@
          (src-library-file (make-path dir library-file))
          (library-dir (path-directory src-library-file))
          (dest-library-file
-           (guile-srfi-fix (string-append (library->path cfg library) ".go")))
+           (string-append (library->path cfg library) ".go"))
          (dest-dir
            (path-directory (make-path dir dest-library-file))))
     ;; ensure the build directory exists
