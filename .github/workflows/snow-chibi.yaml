@@ -113,9 +113,6 @@ jobs:
     runs-on: ubuntu-26.04
     container: practicalscheme/gauche:latest
     steps:
-      - name: Install gauche
-        shell: bash
-        run: sudo apt-get install -y gauche
       - uses: actions/checkout@v6
       - name: snow-fort
         env:
