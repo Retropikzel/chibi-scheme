@@ -2731,15 +2731,16 @@
          (src-library-file (make-path dir library-file))
          (library-dir (path-directory src-library-file))
          (dest-library-file
-          (string-append (library->path cfg library) ".go"))
+           (string-append (library->path cfg library) ".go"))
          (dest-dir
-          (path-directory (make-path dir dest-library-file))))
+           (path-directory (make-path dir dest-library-file))))
     ;; ensure the build directory exists
     (create-directory* dest-dir)
     (with-directory
-     dir
-     (lambda ()
-       (and (system 'guild 'compile '-O0 '--r7rs '-o dest-library-file src-library-file) library)))))
+      dir
+      (lambda ()
+        (and (guard (condition (else #f))
+               (system 'guild 'compile '-O0 '--r7rs '-o dest-library-file src-library-file) library))))))
 
 (define (kawa-builder impl cfg library dir)
   (let* ((src-library-file (make-path dir (get-library-file cfg library)))
