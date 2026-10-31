@@ -1610,7 +1610,7 @@
                   (process->string '(gauche-config "--sitelibdir"))
                   char-whitespace?))
             (dir (process->string
-                   '(gosh -e "(import (scheme base)) (gauche config) (print (gauche-config \"--sitelibdir\")) (exit)")))
+                   '(gosh -e "(begin (import (gauche base) (gauche config)) (print (gauche-config \"--sitelibdir\")) (exit))")))
             (version (process->string '(gosh -e "(begin (print (gauche-version)) (exit))")))
             )
      (display "HERE: ")
