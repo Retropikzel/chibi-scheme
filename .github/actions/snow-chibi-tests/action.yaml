@@ -12,6 +12,7 @@ runs:
 
     - name: Setup
       shell: bash
+      # Failure is for docker where there is no sudo but user is root
       run: sudo make install || make install
 
     - name: Create config file
