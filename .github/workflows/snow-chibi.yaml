@@ -111,6 +111,7 @@ jobs:
         uses: ./.github/actions/snow-chibi-tests
   gauche:
     runs-on: ubuntu-26.04
+    container: practicalscheme/gauche:latest
     steps:
       - name: Install gauche
         shell: bash
