@@ -1622,7 +1622,7 @@
      (let ((path
              (guard (exn (else #f))
                (process->sexp
-                 `(guile -c ,(write-to-string `(write (%site-ccache-dir))))))))
+                 `(guile -c ,(write-to-string `(write (%site-dir))))))))
        (list
          (make-path
            (or (conf-get cfg 'install-prefix) "")
@@ -2423,12 +2423,19 @@
           (library-include-files impl cfg (make-path dir source-sld-file)))
          (install-dir (get-install-source-dir impl cfg))
          (install-lib-dir (get-install-library-dir impl cfg)))
-    (let ((scm-path (make-path install-dir dest-sld-file))
-          (go-path (make-path install-lib-dir dest-go-file)))
+    (let* ((scm-path (make-path install-dir dest-sld-file)))
       (install-directory cfg (path-directory scm-path))
-      (install-directory cfg (path-directory go-path))
       (install-file cfg (make-path dir source-sld-file) scm-path)
-      (install-file cfg (make-path dir source-go-file) go-path)
+      (let* ((install-cache-dir
+               (guard (exn (else #f))
+                 (process->sexp
+                   `(guile -c ,(write-to-string `(write (%site-ccache-dir)))))))
+             (source-go-path (make-path dir source-go-file)))
+        (when (and (string? install-cache-dir)
+                   (file-exists? source-go-path))
+          (let ((go-path (make-path install-cache-dir dest-go-file)))
+            (install-directory cfg (path-directory go-path))
+            (install-file cfg source-go-path go-path))))
       ;; install any includes
       (cons
        scm-path
@@ -2739,8 +2746,15 @@
     (with-directory
       dir
       (lambda ()
-        (and (guard (condition (else #f))
-               (system 'guild 'compile '-O0 '--r7rs '-o dest-library-file src-library-file) library))))))
+        (and (= (car (reverse
+                       (process->output+error+status
+                         `(guile --r7rs -c
+                                 ,(string-append
+                                    "(use-modules (system base compile)) "
+                                    "(compile-file \"" src-library-file "\" "
+                                    "#:output-file \"" dest-library-file "\")")))))
+                0)
+             library)))))
 
 (define (kawa-builder impl cfg library dir)
   (let* ((src-library-file (make-path dir (get-library-file cfg library)))

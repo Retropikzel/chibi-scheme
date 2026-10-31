@@ -46,7 +46,7 @@ jobs:
           SCHEME: chibi
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
-  chicken:
+  chicken-from-apt:
     runs-on: ubuntu-26.04
     steps:
       - name: Install chicken
@@ -109,7 +109,7 @@ jobs:
           SCHEME: foment
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
-  gauche:
+  gauche-from-apt:
     runs-on: ubuntu-26.04
     steps:
       - name: Install gauche
@@ -126,7 +126,7 @@ jobs:
           SCHEME: gauche
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
-  guile:
+  guile-from-apt:
     runs-on: ubuntu-26.04
     steps:
       - name: Install guile
@@ -211,7 +211,7 @@ jobs:
           SCHEME: meevax
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
-  mit-scheme:
+  mit-scheme-from-apt:
     runs-on: ubuntu-26.04
     steps:
       - name: Install mit-scheme
@@ -252,7 +252,7 @@ jobs:
           SCHEME: mosh
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
-  racket:
+  racket-from-apt:
     runs-on: ubuntu-26.04
     steps:
       - name: Install racket
