@@ -115,7 +115,7 @@ jobs:
     steps:
       - name: Install test dependencies
         shell: bash
-        run: apt-get install -y libsqlite3-dev
+        run: apt-get update && apt-get install -y libsqlite3-dev
       - uses: actions/checkout@v6
       - name: snow-fort
         env:
