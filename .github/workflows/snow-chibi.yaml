@@ -10,6 +10,27 @@ on:
       - snow-chibi*
 
 jobs:
+  capyscheme:
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Install capyscheme
+        shell: bash
+        run: |
+          VERSION=3.1.0
+          wget https://github.com/playX18/capyscheme/releases/download/v${VERSION}/capyscheme-${VERSION}-x86_64-unknown-linux-gnu.tar.gz
+          cp -r capyscheme-${VERSION}/${VERSION} /opt/capy
+          ln -sf /opt/capy/capy /usr/local/bin/capy
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: capyscheme
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: capyscheme
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
   chibi:
     runs-on: ubuntu-26.04
     steps:
