@@ -111,14 +111,10 @@ jobs:
         uses: ./.github/actions/snow-chibi-tests
   gauche:
     runs-on: ubuntu-26.04
-    container: practicalscheme/gauche:latest
     steps:
-      - name: Install test dependencies
+      - name: Install gauche
         shell: bash
-        run: |
-          update-ca-certificates
-          apt-get update
-          apt-get install -y libsqlite3-dev ca-certificates
+        run: sudo apt-get install -y gauche
       - uses: actions/checkout@v6
       - name: snow-fort
         env:
