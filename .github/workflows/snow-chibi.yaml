@@ -317,6 +317,29 @@ jobs:
           SCHEME: skint
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+  stak:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Install stak
+        shell: bash
+        run: |
+          VERSION=0.12.33
+          wget https://github.com/raviqqe/stak/releases/download/v${VERSION}/stak_${VERSION}_linux_amd64.tar.gz
+          cp stak /usr/local/bin/stak
+          cp stak-compile /usr/local/bin/stak-compile
+          cp stak-interpret /usr/local/bin/stak-interpret
+          cp stak-repl /usr/local/bin/stak-repl
+      - uses: actions/checkout@v6
+      - name: snow-fort
+        env:
+          SCHEME: stak
+          HOST: http://snow-fort.org
+        uses: ./.github/actions/snow-chibi-tests
+      - name: git
+        env:
+          SCHEME: stak
+          HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
+        uses: ./.github/actions/snow-chibi-tests
   stklos:
     runs-on: ubuntu-26.04
     steps:

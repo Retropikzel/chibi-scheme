@@ -2879,7 +2879,9 @@
           ;; does not work on busybox
           ((or (equal? impl 'skint)
                (equal? impl 'stak))
-           (newline out) ;; Empty line instead of shebang
+           ;; Empty line instead of shebang, on posix this makes the system run
+           ;; the file with shell
+           (newline out)
            (display "#|" out)
            (newline out)
            (display (string-append "exec " script " \"$0\"") out)
