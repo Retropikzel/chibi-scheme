@@ -325,6 +325,7 @@ jobs:
         run: |
           VERSION=0.12.33
           wget https://github.com/raviqqe/stak/releases/download/v${VERSION}/stak_${VERSION}_linux_amd64.tar.gz
+          tar -xf stak_${VERSION}_linux_amd64.tar.gz
           cp stak /usr/local/bin/stak
           cp stak-compile /usr/local/bin/stak-compile
           cp stak-interpret /usr/local/bin/stak-interpret
