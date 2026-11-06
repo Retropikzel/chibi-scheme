@@ -1777,6 +1777,7 @@
                      (string-append "--quiet --load \"$0\" --eval '(exit 0)'"))
                     ((larceny) "-program")
                     ((racket) "\n#lang r7rs\n")
+                    ((skint) "\$0\"")
                     (else #f))))
         (if (and path arg)
             (string-append path " " arg)
@@ -2855,36 +2856,17 @@
     (call-with-output-file dest
       (lambda (out)
         (cond
-          ;; Hack to make foment programs work atleast somewhere
-          ;; does not work on busybox
-          ((equal? impl 'foment)
+          ;; Hacks to make foment, mit-scheme and skint programs work atleast
+          ;; somewhere. When (2026) tested dit not work on alpine linux (busybox)
+          ;; Empty line instead of shebang on posix makes the system run
+          ;; the file with shell
+          ((or (equal? impl 'foment)
+               (equal? impl 'mit-scheme)
+               (equal? impl 'skint))
            (newline out) ;; Empty line instead of shebang
            (display "#|" out)
            (newline out)
            (display (string-append "exec " script) out)
-           (newline out)
-           (display "|#" out)
-           (newline out))
-          ;; Hack to make mit-scheme programs work atleast somewhere
-          ;; does not work on busybox
-          ((equal? impl 'mit-scheme)
-           (newline out) ;; Empty line instead of shebang
-           (display "#|" out)
-           (newline out)
-           (display (string-append "exec " script) out)
-           (newline out)
-           (display "|#" out)
-           (newline out))
-          ;; Hack to make skint and stak programs work atleast somewhere
-          ;; does not work on busybox
-          ((or (equal? impl 'skint)
-               (equal? impl 'stak))
-           ;; Empty line instead of shebang, on posix this makes the system run
-           ;; the file with shell
-           (newline out)
-           (display "#|" out)
-           (newline out)
-           (display (string-append "exec " script " \"$0\"") out)
            (newline out)
            (display "|#" out)
            (newline out))
