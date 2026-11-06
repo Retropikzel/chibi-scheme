@@ -1779,7 +1779,7 @@
                     ((racket) "\n#lang r7rs\n")
                     ((skint) (string-append "-A "
                                             (car (get-install-dirs impl cfg))
-                                            "\$0\""))
+                                            "\"$0\""))
                     (else #f))))
         (if (and path arg)
             (string-append path " " arg)
