@@ -1777,7 +1777,9 @@
                      (string-append "--quiet --load \"$0\" --eval '(exit 0)'"))
                     ((larceny) "-program")
                     ((racket) "\n#lang r7rs\n")
-                    ((skint) "\$0\"")
+                    ((skint) (string-append "-A "
+                                            (car (get-install-dirs impl cfg))
+                                            "\$0\""))
                     (else #f))))
         (if (and path arg)
             (string-append path " " arg)
