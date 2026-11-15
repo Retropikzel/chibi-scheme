@@ -93,6 +93,7 @@ runs:
     - name: snow-chibi install with prefix
       shell: bash
       run: |
+        set -eux
         # Make sure (srfi 64) is installed to implementations default install path
         snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(srfi 64)"
         # Make sure installing (srfi 64) into prefix is not skipped
