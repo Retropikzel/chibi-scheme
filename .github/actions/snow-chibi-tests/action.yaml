@@ -70,7 +70,7 @@ runs:
       shell: bash
       run: |
         printf "(import (scheme base) (scheme write) (chibi assert)) (display 1)" > main1.scm
-        time snow-chibi --host=$HOST install-dependencies --impls=$SCHEME --always-yes main1.scm
+        time snow-chibi --host=$HOST install-dependencies --impls=$SCHEME main1.scm
 
     - name: snow-chibi package / test-package / program / git-index
       shell: bash
