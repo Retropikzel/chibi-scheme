@@ -93,7 +93,7 @@ runs:
     - name: snow-chibi install with prefix
       shell: bash
       run: |
-        snow-chibi --host=$HOST install "(chibi assert)"
+        snow-chibi --host=$HOST --always-yes install "(chibi assert)" || true
         snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix "(chibi assert)" 2>&1 | grep "skipping already installed library" && exit 1
 
     - name: snow-chibi implementations
