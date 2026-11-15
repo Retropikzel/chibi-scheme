@@ -2193,6 +2193,7 @@
 (test '(1 2 3 4 5) (read (open-input-string "(1 . (2 3 4 . (5)))")))
 (test '1 (cadr (read (open-input-string "#0=(1 . #0#)"))))
 (test '(1 2 3) (cadr (read (open-input-string "(#0=(1 2 3) #0#)"))))
+(test-error (read (open-input-string "#7=#23=#200#")))
 
 (test '(quote (1 2)) (read (open-input-string "'(1 2)")))
 (test '(quote (1 (unquote 2))) (read (open-input-string "'(1 ,2)")))
@@ -2456,6 +2457,7 @@
 ;;(test-numeric-syntax "#b10+11i" (make-rectangular 2 3) "2+3i")
 ;;(test-numeric-syntax "#e1.0+1.0i" (make-rectangular 1 1) "1+1i" "1+i")
 ;;(test-numeric-syntax "#i1.0+1.0i" (make-rectangular 1.0 1.0) "1.0+1.0i" "1.+1.i")
+(test #f (string->number "#x4000000000000001/3e1"))
 
 (define-syntax test-precision
   (syntax-rules ()

@@ -2960,7 +2960,10 @@ sexp sexp_read_float_tail (sexp ctx, sexp in, double whole, int negp) {
 
 #if SEXP_USE_RATIOS
 sexp sexp_make_ratio (sexp ctx, sexp num, sexp den) {
-  sexp res = sexp_alloc_type(ctx, ratio, SEXP_RATIO);
+  sexp res, self = NULL;
+  sexp_assert_type(ctx, sexp_exact_integerp, SEXP_BIGNUM, num);
+  sexp_assert_type(ctx, sexp_exact_integerp, SEXP_BIGNUM, den);
+  res = sexp_alloc_type(ctx, ratio, SEXP_RATIO);
   if (!sexp_exceptionp(res)) {
     sexp_ratio_numerator(res) = num;
     sexp_ratio_denominator(res) = den;
@@ -2969,9 +2972,11 @@ sexp sexp_make_ratio (sexp ctx, sexp num, sexp den) {
 }
 
 sexp sexp_ratio_normalize (sexp ctx, sexp rat, sexp in) {
-  sexp tmp;
+  sexp tmp, self = NULL;
   sexp_gc_var2(num, den);
   num = sexp_ratio_numerator(rat), den = sexp_ratio_denominator(rat);
+  sexp_assert_type(ctx, sexp_exact_integerp, SEXP_BIGNUM, num);
+  sexp_assert_type(ctx, sexp_exact_integerp, SEXP_BIGNUM, den);
   if (den == SEXP_ZERO)
     return sexp_read_error(ctx, "zero denominator in ratio", rat, in);
   else if (num == SEXP_ZERO)
@@ -3020,8 +3025,8 @@ sexp sexp_ratio_normalize (sexp ctx, sexp rat, sexp in) {
 #endif
 
 sexp sexp_read_number (sexp ctx, sexp in, int base, int exactp) {
-  sexp_sint_t val = 0, tmp = -1;
-  int c, digit, negativep = 0, inexactp = 0;
+  sexp_sint_t val = 0;
+  int c, digit, negativep = 0, inexactp = 0, digitp = 0;
 #if SEXP_USE_PLACEHOLDER_DIGITS
   double whole = 0.0, scale = 0.1;
 #endif
@@ -3055,19 +3060,18 @@ sexp sexp_read_number (sexp ctx, sexp in, int base, int exactp) {
     digit = digit_value(c);
     if ((digit < 0) || (digit >= base))
       break;
-    tmp = val * base + digit;
+    digitp = 1;
 #if SEXP_USE_BIGNUMS
-    if ((SEXP_MAX_FIXNUM / base < val) ||
-        (tmp < val) || (tmp > SEXP_MAX_FIXNUM)) {
+    if (val > (SEXP_MAX_FIXNUM - digit) / base) {
       sexp_push_char(ctx, c, in);
       return sexp_read_bignum(ctx, in, val, (negativep ? -1 : 1), base);
     }
 #endif
-    val = tmp;
+    val = val * base + digit;
   }
 
 #if SEXP_USE_PLACEHOLDER_DIGITS
-  if (sexp_placeholder_digit_p(c) && tmp >= 0) {
+  if (sexp_placeholder_digit_p(c) && val >= 0) {
     whole = val;
     for ( ; sexp_placeholder_digit_p(c); c=sexp_read_char(ctx, in))
       whole = whole*10 + sexp_placeholder_digit_value(base);
@@ -3184,7 +3188,7 @@ sexp sexp_read_number (sexp ctx, sexp in, int base, int exactp) {
     if ((c!=EOF) && ! sexp_is_separator(c))
       return sexp_read_error(ctx, "invalid numeric syntax",
                              sexp_make_character(c), in);
-    else if (tmp < 0)
+    else if (!digitp)
       return sexp_read_error(ctx, "digitless numeric literal", SEXP_NULL, in);
     sexp_push_char(ctx, c, in);
   }
@@ -3736,6 +3740,7 @@ sexp sexp_read_raw (sexp ctx, sexp in, sexp *shares) {
       tmp = sexp_make_fixnum(c2);
       if (c1 == '#') {
         if (!sexp_vectorp(*shares) ||
+            c2 < 0 || c2 >= (int)sexp_vector_length(*shares) ||
             tmp > sexp_vector_data(*shares)[sexp_vector_length(*shares)-1] ||
             sexp_vector_data(*shares)[c2] == SEXP_VOID) {
           res = sexp_read_error(ctx, "unknown reader label", tmp, in);
