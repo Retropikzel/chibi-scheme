@@ -72,7 +72,7 @@ runs:
         printf "(import (scheme base) (scheme write) (chibi assert)) (display 1)" > main1.scm
         time snow-chibi --host=$HOST install-dependencies --impls=$SCHEME main1.scm
 
-    - name: snow-chibi package / test-package / program / git-index
+    - name: snow-chibi package / test-package / program / git-index / install-prefix
       shell: bash
       run: |
         set -eux
@@ -93,10 +93,10 @@ runs:
     - name: snow-chibi install with prefix
       shell: bash
       run: |
-        # Make sure (chibi assert) is installed to implementations default install path
-        snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(chibi assert)"
-        # Make sure installing (chibi assert) into prefix is not skipped
-        if snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix "(chibi assert)" 2>&1 | grep -q 'skipping already installed library'; then
+        # Make sure (srfi 64) is installed to implementations default install path
+        snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(srfi 64)"
+        # Make sure installing (srfi 64) into prefix is not skipped
+        if snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix "(srfi 64)" 2>&1 | grep -q 'skipping already installed library'; then
           exit 1
         fi
 
