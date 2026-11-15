@@ -93,7 +93,9 @@ runs:
     - name: snow-chibi install with prefix
       shell: bash
       run: |
-        snow-chibi --host=$HOST --always-yes install "(chibi assert)"
+        # Make sure (chibi assert) is installed to implementations default install path
+        snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(chibi assert)"
+        # Make sure installing (chibi assert) into prefix is not skipped
         if snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix "(chibi assert)" 2>&1 | grep -q 'skipping already installed library'; then
           exit 1
         fi
