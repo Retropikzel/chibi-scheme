@@ -8,7 +8,7 @@ runs:
   steps:
     - name: Build
       shell: bash
-      run: make # assumes GNUMake
+      run: make distclean all # assumes GNUMake
 
     - name: Setup
       shell: bash
