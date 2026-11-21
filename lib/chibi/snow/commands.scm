@@ -1763,21 +1763,21 @@
                     ((cyclone) "-s")
                     ((foment)
                      (string-append "-A "
-                                    (car (get-install-dirs impl cfg))
+                                    (get-install-library-dir impl cfg)
                                     " --load \"$0\""))
                     ((gambit) "-:r7rs")
                     ((gauche) "-b")
                     ((guile) "--r7rs\n!#")
                     ((kawa)
                      (string-append "-Dkawa.import.path="
-                                    (car (get-install-dirs impl cfg))
+                                    (get-install-library-dir impl cfg)
                                     "/*.sld"))
                     ((mit-scheme)
                      (string-append "--quiet --load \"$0\" --eval '(exit 0)'"))
                     ((larceny) "-program")
                     ((racket) "\n#lang r7rs\n")
                     ((skint) (string-append "-A "
-                                            (car (get-install-dirs impl cfg))
+                                            (get-install-library-dir impl cfg)
                                             " \"$0\""))
                     (else #f))))
         (if (and path arg)
@@ -2781,7 +2781,7 @@
   (let* ((src-library-file (make-path dir (get-library-file cfg library)))
          (res (system 'kawa
                       (string-append "-Dkawa.import.path="
-                                     (car (get-install-dirs impl cfg)))
+                                     (get-install-library-dir impl cfg))
                       '-d dir
                       '-C src-library-file)))
     (and (or (and (pair? res) (zero? (cadr res)))
