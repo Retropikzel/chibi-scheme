@@ -1809,9 +1809,10 @@
            (if lib-path
                `(kawa
                  ,(string-append "-Dkawa.import.path=" install-dir ":"
-                                 (path-resolve lib-path (current-directory)))
+                                 (path-resolve lib-path (current-directory))
+                                 "/*.sld")
                  --r7rs --script ,file)
-               `(kawa ,(string-append "-Dkawa.import.path=" install-dir)
+               `(kawa ,(string-append "-Dkawa.import.path=" install-dir "/*.sld")
                       --r7rs --script ,file))))
         ((loko)
          (let ((install-dir (path-resolve install-dir (current-directory))))
@@ -2751,7 +2752,8 @@
   (let* ((src-library-file (make-path dir (get-library-file cfg library)))
          (res (system 'kawa
                       (string-append "-Dkawa.import.path="
-                                     (get-install-library-dir impl cfg))
+                                     (get-install-library-dir impl cfg)
+                                    "/*.sld")
                       '-d dir
                       '-C src-library-file)))
     (and (or (and (pair? res) (zero? (cadr res)))
