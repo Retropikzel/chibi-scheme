@@ -1569,16 +1569,10 @@
          (process->string
            '(capy -c "(printf \"~a\" (car %load-path))")))))
     ((chibi)
-     (let* ((dirs
-             (reverse
-              (cond-expand
-               (chibi (eval '(current-module-path) (environment '(chibi))))
-               (else (process->sexp
-                      '(chibi-scheme -q -p "(current-module-path)"))))))
-            (share-dir (find (lambda (d) (string-contains d "/share/snow")) dirs)))
-       (if share-dir
-           (cons share-dir (delete share-dir dirs))
-           dirs)))
+     (if snow-module-directory
+       (list snow-module-directory)
+       (error "snow-module-directory has not been generated, this most propably
+              means that something is wrong with your chibi installation")))
     ((chicken)
      (let ((dir (get-chicken-repo-path)))
        (list

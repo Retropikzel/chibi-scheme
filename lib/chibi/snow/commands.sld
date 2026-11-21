@@ -65,5 +65,11 @@
    ((library (srfi 151)) (import (srfi 151)))
    ((library (srfi 33)) (import (srfi 33)))
    (else (import (srfi 60))))
-  (import (chibi snow install))
+  (cond-expand
+   ((library (chibi snow install))
+    (import (chibi snow install)))
+   (else
+    (begin
+      (define snow-module-directory #f)
+      (define snow-binary-module-directory #f))))
   (include "commands.scm"))
