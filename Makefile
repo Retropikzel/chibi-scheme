@@ -549,6 +549,7 @@ snowballs:
 	$(SNOW_CHIBI) package lib/chibi/diff.sld
 	$(SNOW_CHIBI) package lib/chibi/edit-distance.sld
 	$(SNOW_CHIBI) package lib/chibi/filesystem.sld
+	$(SNOW_CHIBI) package lib/chibi/io.sld
 	$(SNOW_CHIBI) package lib/chibi/math/prime.sld
 	$(SNOW_CHIBI) package lib/chibi/mime.sld
 	$(SNOW_CHIBI) package lib/chibi/monad/environment.sld
