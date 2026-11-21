@@ -1584,7 +1584,7 @@
        (list
         (if (file-exists? dir)  ; repository-path should always exist
             dir
-            (make-path (or (conf-get cfg 'install-prefix) "lib")
+            (make-path "lib"
                        impl
                        (get-chicken-binary-version cfg))))))
     ((cyclone)
@@ -1598,10 +1598,9 @@
      (list (make-path (get-environment-variable "HOME")
                       ".gambit_userlib")))
     ((generic)
-     (list (make-path (or (conf-get cfg 'install-prefix)
-                          (cond-expand (windows (get-environment-variable "LOCALAPPDATA"))
-                                       (else "/usr/local"))
-                          "/lib/snow"))))
+     (list (make-path (cond-expand (windows (get-environment-variable "LOCALAPPDATA"))
+                                   (else "/usr/local"))
+                      "/lib/snow")))
     ((gauche)
      (list
       (let ((dir (string-trim
@@ -1623,14 +1622,12 @@
                  `(guile -c ,(write-to-string `(write (%site-dir))))))))
        (list
          (make-path
-           (or (conf-get cfg 'install-prefix) "")
            (if (string? path)
              path
              "/usr/local/share/guile/")))))
     ((kawa)
      (list
        (make-path
-         (if (conf-get cfg 'install-prefix) (conf-get cfg 'install-prefix) "")
          (let ((kawa-classpath
                  (string-split
                    (process->string
@@ -1726,31 +1723,7 @@
                                 (newline)
                                 (display "(display (car (scheme-library-paths)))")))
          (list (make-path (process->string `(ypsilon --r7rs ,tmp-path)))))))
-    (else
-     (list (make-path (or (conf-get cfg 'install-prefix) "/usr/local")
-                      "share/snow"
-                      impl)))))
-
-(define-memoized (get-install-library-dirs impl cfg)
-  (case impl
-    ((chibi)
-     (let* ((dirs
-             (reverse
-              (cond-expand
-               (chibi (eval '(current-module-path) (environment '(chibi))))
-               (else (process->sexp
-                      '(chibi-scheme -q -p "(current-module-path)"))))))
-            (lib-dir (find (lambda (d)
-                             (and (equal? (string-ref d 0) #\/)
-                                  (string-contains d "/lib")))
-                           dirs)))
-       (if lib-dir
-           (cons lib-dir (delete lib-dir dirs))
-           dirs)))
-    (else
-     (list (make-path (or (conf-get cfg 'install-prefix) "/usr/local")
-                      "lib"
-                      impl)))))
+    (else (error "Unkown implementation" impl))))
 
 (define (scheme-script-command impl cfg)
   (or (and (eq? impl 'chibi) (conf-get cfg 'chibi-path))
@@ -2191,54 +2164,10 @@
    (else snow-module-directory)))
 
 (define (get-install-library-dir impl cfg)
-  (cond
-   ((conf-get cfg 'install-library-dir))
-   ((eq? impl 'capyscheme)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'chicken)
-    (cond ((conf-get cfg 'install-prefix)
-           => (lambda (prefix)
-                (make-path prefix "lib" impl
-                           (get-chicken-binary-version cfg))))
-          (else
-           (car (get-install-dirs impl cfg)))))
-   ((eq? impl 'gauche)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'generic)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'cyclone)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'gambit)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'guile)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'kawa)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'loko)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'meevax)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'mit-scheme)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'mosh)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'racket)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'sagittarius)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'skint)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'stak)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'stklos)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'tr7)
-    (car (get-install-dirs impl cfg)))
-   ((eq? impl 'ypsilon)
-    (car (get-install-dirs impl cfg)))
-   ((conf-get cfg 'install-prefix)
-    => (lambda (prefix) (make-path prefix "lib" impl)))
-   (else snow-binary-module-directory)))
+  (make-path
+    (or (conf-get cfg 'install-library-dir)
+        (or (conf-get cfg 'install-prefix) "")
+        (car (get-install-dirs impl cfg)))))
 
 (define (get-install-binary-dir impl cfg)
   (cond
