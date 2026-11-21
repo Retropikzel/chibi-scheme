@@ -2440,16 +2440,22 @@
          (library-shared-include-files
           impl cfg (make-path dir source-sld-file)))))
       (let* ((install-cache-dir
-               (guard (exn (else #f))
-                 (process->sexp
-                   `(guile -c ,(write-to-string `(write (%site-ccache-dir)))))))
+               (cond
+                 ((conf-get cfg 'install-prefix)
+                  => (lambda (prefix)
+                       (let ((prefix-dir (make-path prefix "lib/" impl)))
+                       (create-directory* prefix-dir)
+                       prefix-dir)))
+                 (else
+                   (guard (exn (else #f))
+                     (process->sexp
+                       `(guile -c ,(write-to-string `(write (%site-ccache-dir)))))))))
              (source-go-path (make-path dir source-go-file)))
         (when (and (string? install-cache-dir)
                    (file-exists? source-go-path))
           (let ((go-path (make-path install-cache-dir dest-go-file)))
             (install-directory cfg (path-directory go-path))
-            (install-file cfg source-go-path go-path))))
-      )))
+            (install-file cfg source-go-path go-path)))))))
 
 (define (kawa-installer impl cfg library dir)
   (let* ((class-file (path-replace-extension
