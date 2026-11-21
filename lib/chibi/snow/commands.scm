@@ -1594,6 +1594,10 @@
                       (string-trim (process->string '(icyc -p "(Cyc-installation-dir 'sld)"))
                                    char-whitespace?)))))
        (list (or dir "/usr/local/share/cyclone/"))))
+    ((foment)
+     (list (make-path (cond-expand (windows (get-environment-variable "LOCALAPPDATA"))
+                                   (else "/usr/local"))
+                      "/lib/snow")))
     ((gambit)
      (list (make-path (get-environment-variable "HOME")
                       ".gambit_userlib")))
@@ -2166,8 +2170,9 @@
 (define (get-install-library-dir impl cfg)
   (make-path
     (or (conf-get cfg 'install-library-dir)
-        (or (conf-get cfg 'install-prefix) "")
-        (car (get-install-dirs impl cfg)))))
+        (make-path
+          (or (conf-get cfg 'install-prefix) "")
+          (car (get-install-dirs impl cfg))))))
 
 (define (get-install-binary-dir impl cfg)
   (cond
