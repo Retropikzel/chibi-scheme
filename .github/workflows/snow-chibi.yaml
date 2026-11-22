@@ -39,10 +39,12 @@ jobs:
         run: |
           set -eux
           rm -rf /tmp/prefix
+          rm -rf prefix.scm
           snow-chibi install --impls=capyscheme --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > prefix.scm
           tree /tmp/prefix
-          capy -A /tmp/prefix/share/snow/capy --script /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          capy -A /tmp/prefix/share/snow/capy prefix.scm
+          ./prefix | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
           else
@@ -126,11 +128,12 @@ jobs:
         run: |
           set -eux
           rm -rf /tmp/prefix
+          rm -rf prefix.scm
           snow-chibi install --impls=cyclone --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > prefix.scm
           tree /tmp/prefix
-          cyclone -A /tmp/prefix/share/snow/cyclone /tmp/prefix.scm
-          /tmp/prefix | tee /tmp/prefix/out.txt
+          cyclone -A /tmp/prefix/share/snow/cyclone prefix.scm
+          ./prefix | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
           else
@@ -310,11 +313,12 @@ jobs:
         run: |
           set -eux
           rm -rf /tmp/prefix
+          rm -rf prefix.scm
           snow-chibi install --impls=loko --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > prefix.scm
           tree /tmp/prefix
-          LOKO_LIBRARY_PATH=/tmp/prefix/share/snow/loko loko -std=r7rs --compile /tmp/prefix.scm
-          /tmp/prefix | tee /tmp/prefix/out.txt
+          LOKO_LIBRARY_PATH=/tmp/prefix/share/snow/loko loko -std=r7rs --compile prefix.scm
+          ./prefix | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
           else
