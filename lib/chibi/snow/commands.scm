@@ -1200,8 +1200,7 @@
     (for-each
      (lambda (impl impl-cfg)
        (for-each (lambda (pkg lib-name)
-                   (guard (exn (else #f))
-                     (delete-library-files impl impl-cfg (cdr pkg) lib-name)))
+                   (delete-library-files impl impl-cfg (cdr pkg) lib-name))
                  (lookup-installed-libraries impl impl-cfg lib-names)
                  lib-names))
      impls

@@ -58,6 +58,14 @@ runs:
       shell: bash
       run: snow-chibi --host=$HOST upgrade "(chibi assert)"
 
+    - name: snow-chibi remove
+      shell: bash
+      run: snow-chibi remove "(chibi assert)"
+
+    - name: snow-chibi status 2 (removed)
+      shell: bash
+      run: snow-chibi status "(chibi assert)"
+
     - name: snow-chibi install-dependencies
       shell: bash
       run: |
@@ -91,22 +99,9 @@ runs:
         snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(retropikzel hello)"
         echo "Make sure installing (retropikzel hello) into prefix is not skipped"
         snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix --always-yes "(retropikzel hello)" 2>&1 | tee /tmp/${SCHEME}-prefix-out.txt
-        if cat /tmp/${SCHEME}-prefix/out.txt | grep -q 'skipping already installed library'; then
+        if cat /tmp/${SCHEME}-prefix-out.txt | grep -q 'skipping already installed library'; then
           exit 1
         fi
-
-    - name: snow-chibi remove
-      shell: bash
-      run: |
-        snow-chibi remove "(chibi assert)"
-        snow-chibi install "(chibi assert)" 2>&1 | tee /tmp/${SCHEME}-remove-out.txt
-        if cat /tmp/${SCHEME}-remove-out.txt | grep -q 'skipping already installed library'; then
-          exit 1
-        fi
-
-    - name: snow-chibi status 2 (removed)
-      shell: bash
-      run: snow-chibi status "(chibi assert)"
 
     - name: snow-chibi implementations
       shell: bash
