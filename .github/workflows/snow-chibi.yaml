@@ -247,7 +247,7 @@ jobs:
             exit 1
           fi
           echo "Test compiled"
-          guile --r7rs -C /tmp/prefix/share/snow/guile /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          guile --r7rs -C /tmp/prefix/lib/guile /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
           else
