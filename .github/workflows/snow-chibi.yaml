@@ -53,10 +53,11 @@ jobs:
         shell: bash
         run: |
           set -eux
+          rm -rf /tmp/chibi-prefix-test2
           snow-chibi install --install-prefix=/tmp/chibi-prefix-test2 --always-yes "(retropikzel hello)"
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/chibi-prefix-test2.scm
-          chibi-scheme -A /tmp/chibi-prefix-test2/share/snow/chibi /tmp/chibi-prefix-test2.scm | tee /tmp/chibi-prefix-test2-out.txt
-          cat /tmp/chibi-prefix-test2-out.txt | grep -q "Hello"; then
+          chibi-scheme -A /tmp/chibi-prefix-test2/share/snow/chibi /tmp/chibi-prefix-test2.scm | tee /tmp/chibi-prefix-test2/out.txt
+          cat /tmp/chibi-prefix-test2/out.txt | grep -q "Hello"; then
             sleep 0
           else
             exit 1

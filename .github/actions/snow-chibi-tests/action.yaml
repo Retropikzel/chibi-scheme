@@ -94,6 +94,7 @@ runs:
       shell: bash
       run: |
         set -eux
+        rm -rf /tmp/${SCHEME}-prefix
         echo "Make sure (retropikzel hello) is installed to implementations default install path"
         snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(retropikzel hello)"
         echo "Make sure installing (retropikzel hello) into prefix is not skipped"
