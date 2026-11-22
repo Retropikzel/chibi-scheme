@@ -44,7 +44,7 @@ runs:
 
     - name: snow-chibi install
       shell: bash
-      run: time snow-chibi --host=$HOST install "(chibi assert)"
+      run: time snow-chibi --host=$HOST install "(chibi sxml)"
 
     - name: snow-chibi install (with .stub)
       shell: bash
@@ -52,24 +52,24 @@ runs:
 
     - name: snow-chibi status 1 (installed)
       shell: bash
-      run: snow-chibi status "(chibi assert)"
+      run: snow-chibi status "(chibi sxml)"
 
     - name: snow-chibi upgrade
       shell: bash
-      run: snow-chibi --host=$HOST upgrade "(chibi assert)"
+      run: snow-chibi --host=$HOST upgrade "(chibi sxml)"
 
     - name: snow-chibi remove
       shell: bash
-      run: snow-chibi remove "(chibi assert)"
+      run: snow-chibi remove "(chibi sxml)"
 
     - name: snow-chibi status 2 (removed)
       shell: bash
-      run: snow-chibi status "(chibi assert)"
+      run: snow-chibi status "(chibi sxml)"
 
     - name: snow-chibi install-dependencies
       shell: bash
       run: |
-        printf "(import (scheme base) (scheme write) (chibi assert)) (display 1)" > main1.scm
+        printf "(import (scheme base) (scheme write) (chibi sxml)) (display 1)" > main1.scm
         time snow-chibi --host=$HOST install-dependencies --impls=$SCHEME main1.scm
 
     - name: snow-chibi package / test-package / program / git-index
@@ -95,10 +95,10 @@ runs:
       run: |
         set -eux
         rm -rf /tmp/${SCHEME}-prefix
-        echo "Make sure (chibi assert) is installed to implementations default install path"
-        snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(chibi assert)"
-        echo "Make sure installing (chibi assert) into prefix is not skipped"
-        snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix --always-yes "(chibi assert)" 2>&1 | tee /tmp/${SCHEME}-prefix-out.txt
+        echo "Make sure (chibi sxml) is installed to implementations default install path"
+        snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(chibi sxml)"
+        echo "Make sure installing (chibi sxml) into prefix is not skipped"
+        snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix --always-yes "(chibi sxml)" 2>&1 | tee /tmp/${SCHEME}-prefix-out.txt
         if cat /tmp/${SCHEME}-prefix-out.txt | grep -q 'skipping already installed library'; then
           exit 1
         fi
