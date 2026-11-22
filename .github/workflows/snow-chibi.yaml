@@ -15,6 +15,12 @@ jobs:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
     steps:
+      - name: Clean up
+        shell: bash
+        run: |
+          rm -rf /opt/capy
+          ls /usr/local
+
       - name: Install capyscheme
         shell: bash
         run: |
