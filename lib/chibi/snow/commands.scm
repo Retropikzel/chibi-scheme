@@ -1580,9 +1580,7 @@
            (cons share-dir (delete share-dir dirs))
            dirs)))
     ((chicken)
-     (let ((dir (get-chicken-repo-path)))
-       (create-directory* dir) ; repository-path should always exist
-       (list dir)))
+     (list (get-chicken-repo-path)))
     ((cyclone)
      (let ((dir (let ((lib-path (get-environment-variable "CYCLONE_LIBRARY_PATH")))
                   (if lib-path
