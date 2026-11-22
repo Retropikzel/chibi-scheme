@@ -94,10 +94,10 @@ runs:
       shell: bash
       run: |
         set -eux
-        echo "Make sure (srfi 64) is installed to implementations default install path"
-        snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(srfi 64)"
-        echo "Make sure installing (srfi 64) into prefix is not skipped"
-        snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix --always-yes "(srfi 64)" 2>&1 | tee /tmp/${SCHEME}-prefix-out.txt
+        echo "Make sure (retropikzel hello) is installed to implementations default install path"
+        snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(retropikzel hello)"
+        echo "Make sure installing (retropikzel hello) into prefix is not skipped"
+        snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix --always-yes "(retropikzel hello)" 2>&1 | tee /tmp/${SCHEME}-prefix-out.txt
         if cat /tmp/${SCHEME}-prefix-out.txt | grep -q 'skipping already installed library'; then
           exit 1
         fi
