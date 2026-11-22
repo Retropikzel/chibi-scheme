@@ -97,7 +97,7 @@ runs:
         echo "Make sure (srfi 64) is installed to implementations default install path"
         snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(srfi 64)"
         echo "Make sure installing (srfi 64) into prefix is not skipped"
-        if snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix "(srfi 64)" 2>&1 | grep -q 'skipping already installed library'; then
+        if snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix "(srfi 64)" 2>&1 | tee "$(tty)" | grep -q 'skipping already installed library'; then
           exit 1
         fi
 
