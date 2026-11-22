@@ -1581,12 +1581,8 @@
            dirs)))
     ((chicken)
      (let ((dir (get-chicken-repo-path)))
-       (list
-        (if (file-exists? dir)  ; repository-path should always exist
-            dir
-            (make-path "lib"
-                       impl
-                       (get-chicken-binary-version cfg))))))
+       (create-directory* dir) ; repository-path should always exist
+       dir))
     ((cyclone)
      (let ((dir (let ((lib-path (get-environment-variable "CYCLONE_LIBRARY_PATH")))
                   (if lib-path
