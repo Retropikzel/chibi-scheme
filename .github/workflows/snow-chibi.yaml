@@ -49,6 +49,16 @@ jobs:
           SCHEME: chibi
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Chibi prefix test
+        shell: bash
+        run: |
+          snow-chibi install --install-prefix=/tmp/chibi-prefix-test2 "(chibi base64)"
+          printf "(import (scheme base) (scheme write) (chibi base64)) (display \"Hello\")" > /tmp/chibi-prefix-test2.scm
+          if chibi-scheme -A /tmp/chibi-prefix-test2/share/snow/chibi /tmp/chibi-prefix-test2.scm | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   chicken-from-apt:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
