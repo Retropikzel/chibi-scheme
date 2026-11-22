@@ -43,8 +43,7 @@ jobs:
           snow-chibi install --always-yes --impls=capyscheme --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
           printf "(import (scheme base) (retropikzel hello)) (hello)" > prefix.scm
           tree /tmp/prefix
-          capy -A /tmp/prefix/share/snow/capy prefix.scm
-          ./prefix | tee /tmp/prefix/out.txt
+          capy -A /tmp/prefix/share/snow/capy prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
           else
