@@ -2355,7 +2355,9 @@
     (install-file cfg (make-path dir so-path) dest-so-path)
     (install-file cfg (make-path dir link-path) dest-link-path)
     (install-file cfg (make-path dir imp-path) dest-imp-path)
-    (list dest-so-path dest-imp-path)))
+    (cons dest-so-path
+          (cons dest-imp-path
+                (default-installer impl cfg library dir)))))
 
 (define (cyclone-installer impl cfg library dir)
   (let* ((library-file (get-library-file cfg library))
