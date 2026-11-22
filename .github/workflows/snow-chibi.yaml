@@ -98,6 +98,14 @@ jobs:
           SCHEME: chicken
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Chicken prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          rm -rf prefix.scm
+          snow-chibi install --always-yes --impls=chicken --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          echo "No running tests for Chicken, I do not know how it could be done"
   cyclone:
     runs-on: ubuntu-24.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
