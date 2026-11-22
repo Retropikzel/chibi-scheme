@@ -40,8 +40,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=capyscheme --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           capy -A /tmp/prefix/share/snow/capy --script /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -69,8 +69,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=chibi --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           chibi-scheme -A /tmp/prefix/share/snow/chibi /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -127,8 +127,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=cyclone --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           cyclone -A /tmp/prefix/share/snow/cyclone /tmp/prefix.scm
           /tmp/prefix | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
@@ -164,8 +164,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=foment --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           foment -A /tmp/prefix/share/snow/foment /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -196,8 +196,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=gauche --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           gosh -r7 -A /tmp/prefix/share/snow/gauche /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -228,8 +228,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=guile --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           echo "Test source"
           guile --r7rs -L /tmp/prefix/share/snow/guile /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
@@ -274,8 +274,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=kawa --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           kawa -Dkawa.import.path=/tmp/prefix/share/snow/kawa/*.sld --r7rs /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -311,8 +311,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=loko --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           LOKO_LIBRARY_PATH=/tmp/prefix/share/snow/loko loko -std=r7rs --compile /tmp/prefix.scm
           /tmp/prefix | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
@@ -350,8 +350,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=meevax --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           meevax -A /tmp/prefix/share/snow/meevax /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -382,8 +382,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=mit-scheme --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           echo "Adding dir to mit-scheme load path borderline impossible, so just load the library"
           mit-scheme --batch-mode --load /tmp/prefix/share/snow/mit-scheme/retropikzel/hello.sld --load /tmp/prefix.scm --eval '(exit 0)' | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
@@ -422,8 +422,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=mosh --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           mosh --loadpath=/tmp/prefix/share/snow/mosh /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -456,8 +456,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=racket --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           racket -I r7rs -S /tmp/prefix/share/snow/racket --script /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -496,8 +496,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=sagittarius --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           sash -A /tmp/prefix/share/snow/sagittarius /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -532,8 +532,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=skint --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           skint -A /tmp/prefix/share/snow/skint /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -571,8 +571,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=stak --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           stak -A /tmp/prefix/share/snow/stak /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -608,8 +608,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=stklos --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           stklos -A /tmp/prefix/share/snow/stklos /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -644,8 +644,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=tr7 --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           TR7_LIB_PATH=/tmp/prefix/share/snow/tr7 tr7i /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
@@ -685,8 +685,8 @@ jobs:
           set -eux
           rm -rf /tmp/prefix
           snow-chibi install --impls=ypsilon --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
-          tree /tmp/prefix
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          tree /tmp/prefix
           ypsilon --sitelib=/tmp/prefix/share/snow/ypsilon /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
