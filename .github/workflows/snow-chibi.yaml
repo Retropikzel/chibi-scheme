@@ -34,6 +34,19 @@ jobs:
           SCHEME: capyscheme
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Capy prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          capy -A /tmp/prefix/share/snow/capy /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   chibi:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -53,11 +66,11 @@ jobs:
         shell: bash
         run: |
           set -eux
-          rm -rf /tmp/chibi-prefix
-          snow-chibi install --install-prefix=/tmp/chibi-prefix --always-yes "(retropikzel hello)"
-          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/chibi-prefix.scm
-          chibi-scheme -A /tmp/chibi-prefix/share/snow/chibi /tmp/chibi-prefix.scm | tee /tmp/chibi-prefix/out.txt
-          if cat /tmp/chibi-prefix/out.txt | grep -q "Hello"; then
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          chibi-scheme -A /tmp/prefix/share/snow/chibi /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
           else
             exit 1
@@ -106,6 +119,20 @@ jobs:
           SCHEME: cyclone
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Cyclone prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          cyclone -A /tmp/prefix/share/snow/cyclone /tmp/prefix.scm
+          /tmp/prefix | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   foment:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -128,6 +155,19 @@ jobs:
           SCHEME: foment
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Foment prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          foment -A /tmp/prefix/share/snow/foment /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   gauche-from-apt:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -146,6 +186,19 @@ jobs:
           SCHEME: gauche
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Gauche prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          gosh -r7 -A /tmp/prefix/share/snow/gauche /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   guile-from-apt:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -164,6 +217,19 @@ jobs:
           SCHEME: guile
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Guile prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          guile -A /tmp/prefix/share/snow/guile /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   kawa:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -188,6 +254,19 @@ jobs:
           SCHEME: kawa
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Kawa prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          kawa -Dkawa.import.path=/tmp/capy-prefix/share/snow/kawa/*.sld --r7rs /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   loko:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -211,6 +290,20 @@ jobs:
           SCHEME: loko
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Loko prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          LOKO_LIBRARY_PATH=/tmp/prefix/share/snow/loko loko -std=r7rs -compile /tmp/prefix.scm
+          /tmp/prefix | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   meevax:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -235,6 +328,19 @@ jobs:
           SCHEME: meevax
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Meevax prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          meevax -A /tmp/prefix/share/snow/meevax /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   mit-scheme-from-apt:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -253,6 +359,19 @@ jobs:
           SCHEME: mit-scheme
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: MIT-Scheme prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          mit-scheme -A /tmp/prefix/share/snow/mit-scheme /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   mosh:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -278,6 +397,19 @@ jobs:
           SCHEME: mosh
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Mosh prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          mosh -A /tmp/prefix/share/snow/mosh /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   racket-from-apt:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -298,6 +430,19 @@ jobs:
           SCHEME: racket
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Racket prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          racket -I r7rs -S /tmp/prefix/share/snow/racket --script /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   sagittarius:
     runs-on: ubuntu-24.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -324,6 +469,19 @@ jobs:
           SCHEME: sagittarius
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Sagittarius prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          sash -A /tmp/prefix/share/snow/sagittarius /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   skint:
     runs-on: ubuntu-24.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -346,6 +504,19 @@ jobs:
           SCHEME: skint
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Skint prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          skint -A /tmp/prefix/share/snow/skint /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   stak:
     runs-on: ubuntu-24.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -371,6 +542,19 @@ jobs:
           SCHEME: stak
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Stak prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          stak -A /tmp/prefix/share/snow/stak /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   stklos:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -394,6 +578,19 @@ jobs:
           SCHEME: stklos
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: STklos prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          stklos -A /tmp/prefix/share/snow/stklos /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   tr7:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -416,6 +613,19 @@ jobs:
           SCHEME: tr7
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: tr7 prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          TR7_LIB_PATH=/tmp/prefix/share/snow/tr7 tr7i /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
   ypsilon:
     runs-on: ubuntu-26.04
     if: ${{ startsWith(github.head_ref, 'snow-chibi') || startsWith(github.ref_name, 'snow-chibi') }}
@@ -443,3 +653,16 @@ jobs:
           SCHEME: ypsilon
           HOST: https://github.com/Snow-fort-repository/snow-fort-repository.git
         uses: ./.github/actions/snow-chibi-tests
+      - name: Ypsilon prefix test
+        shell: bash
+        run: |
+          set -eux
+          rm -rf /tmp/prefix
+          snow-chibi install --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
+          printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
+          ypsilon -A /tmp/prefix/share/snow/ypsilon /tmp/prefix.scm | tee /tmp/prefix/out.txt
+          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
+            sleep 0
+          else
+            exit 1
+          fi
