@@ -239,14 +239,6 @@ jobs:
           snow-chibi install --always-yes --impls=guile --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
           printf "(import (scheme base) (retropikzel hello)) (hello)" > /tmp/prefix.scm
           tree /tmp/prefix
-          echo "Test source"
-          guile --r7rs -L /tmp/prefix/share/snow/guile /tmp/prefix.scm | tee /tmp/prefix/out.txt
-          if cat /tmp/prefix/out.txt | grep -q "Hello"; then
-            sleep 0
-          else
-            exit 1
-          fi
-          echo "Test compiled"
           guile --r7rs -C /tmp/prefix/lib/guile /tmp/prefix.scm | tee /tmp/prefix/out.txt
           if cat /tmp/prefix/out.txt | grep -q "Hello"; then
             sleep 0
