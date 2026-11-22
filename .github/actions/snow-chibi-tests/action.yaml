@@ -95,10 +95,10 @@ runs:
       run: |
         set -eux
         rm -rf /tmp/${SCHEME}-prefix
-        echo "Make sure (arvyy mustache) is installed to implementations default install path"
-        snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(arvyy mustache)"
-        echo "Make sure installing (arvyy mustache) into prefix is not skipped"
-        snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix --always-yes "(arvyy mustache)" 2>&1 | tee /tmp/${SCHEME}-prefix-out.txt
+        echo "Make sure (chibi assert) is installed to implementations default install path"
+        snow-chibi --host=$HOST --always-yes install --impls=$SCHEME --always-yes "(chibi assert)"
+        echo "Make sure installing (chibi assert) into prefix is not skipped"
+        snow-chibi --verbose --host=$HOST install --impls=$SCHEME --install-prefix=/tmp/$SCHEME-prefix --always-yes "(chibi assert)" 2>&1 | tee /tmp/${SCHEME}-prefix-out.txt
         if cat /tmp/${SCHEME}-prefix-out.txt | grep -q 'skipping already installed library'; then
           exit 1
         fi
