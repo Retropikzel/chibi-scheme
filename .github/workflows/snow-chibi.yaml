@@ -103,7 +103,6 @@ jobs:
         run: |
           set -eux
           rm -rf /tmp/prefix
-          rm -rf prefix.scm
           snow-chibi install --always-yes --impls=chicken --install-prefix=/tmp/prefix --always-yes "(retropikzel hello)"
           echo "No running tests for Chicken, I do not know how it could be done"
   cyclone:
